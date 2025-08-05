@@ -67,7 +67,7 @@ body: Center(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppStyles.primaryGreen,
                         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      ), child: const Text("Allow location",  style: TextStyle(fontSize: 16, color: AppStyles.background), ))
+                      ), child: const Text("Allow location",  style: TextStyle(fontSize: 16, color: Colors.white), ))
     ],
     
   )

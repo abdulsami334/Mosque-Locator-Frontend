@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
+import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/utils/constant.dart';
+import 'package:mosque_locator/views/login_view.dart';
 import 'package:mosque_locator/views/splash_view.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) =>MosqueProvider ()),
+          ChangeNotifierProvider(create: (_) =>AuthProvider ()),
       ],
           child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.primaryGreen),
           useMaterial3: true,
         ),
-        home: const SplashView(),
+        home:  SplashView(),
       ),
     );
   }

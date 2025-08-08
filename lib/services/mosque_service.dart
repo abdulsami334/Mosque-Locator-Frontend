@@ -1,24 +1,20 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:mosque_locator/models/mosque_model.dart';
 
 class MosqueService {
+  // Change IP / port if your backend runs elsewhere
+  static const String _baseUrl = 'http://192.168.18.20:5000/api/mosques';
 
-  Future<List<MosqueModel>> fetchMosque()async{
-     // Mock data – Replace with HTTP fetch from your backend later
-    return [
-      MosqueModel(
-        id: '1',
-        name: 'Masjid Noor',
-        latitude: 24.8607,
-        longitude: 67.0011,
-        address: 'Block 11, Karachi',
-      ),
-      MosqueModel(
-        id: '2',
-        name: 'Masjid Quba',
-        latitude: 24.8612,
-        longitude: 67.0002,
-        address: 'Block 11, Karachi',
-      ),
-    ];
+  Future<List<MosqueModel>> getNearbyMosques(
+    double lat, double lng, {int radius = 500}) async {
+  final uri = Uri.parse(
+      '$_baseUrl/nearby?lat=$lat&lng=$lng&radius=$radius');
+  final res = await http.get(uri);
+  if (res.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(res.body);
+    return data.map((e) => MosqueModel.fromJson(e)).toList();
   }
+  throw Exception('Failed to load nearby mosques');
+}
 }

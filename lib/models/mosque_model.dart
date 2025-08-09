@@ -8,10 +8,24 @@ class Coordinates {
   });
 
   factory Coordinates.fromJson(Map<String, dynamic> json) {
-    return Coordinates(
-      lat: (json['lat'] as num).toDouble(),
-      lng: (json['lng'] as num).toDouble(),
-    );
+    // Case 1: Direct lat/lng
+    if (json.containsKey('lat') && json.containsKey('lng')) {
+      return Coordinates(
+        lat: (json['lat'] as num).toDouble(),
+        lng: (json['lng'] as num).toDouble(),
+      );
+    }
+    // Case 2: GeoJSON style { type: "Point", coordinates: [lng, lat] }
+    else if (json.containsKey('coordinates') && json['coordinates'] is List) {
+      final coords = json['coordinates'] as List;
+      if (coords.length >= 2) {
+        return Coordinates(
+          lat: (coords[1] as num).toDouble(),
+          lng: (coords[0] as num).toDouble(),
+        );
+      }
+    }
+    return Coordinates(lat: 0.0, lng: 0.0);
   }
 
   Map<String, dynamic> toJson() => {
@@ -46,15 +60,26 @@ class MosqueModel {
   });
 
   factory MosqueModel.fromJson(Map<String, dynamic> json) {
+    Coordinates coords;
+
+    // Agar backend 'coordinates' deta hai
+    if (json['coordinates'] != null) {
+      coords = Coordinates.fromJson(json['coordinates']);
+    }
+    // Agar backend 'location' deta hai
+    else if (json['location'] != null) {
+      coords = Coordinates.fromJson(json['location']);
+    } else {
+      coords = Coordinates(lat: 0.0, lng: 0.0);
+    }
+
     return MosqueModel(
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
       address: json['address'] ?? '',
       city: json['city'] ?? '',
       area: json['area'] ?? '',
-      coordinates: json['coordinates'] != null
-          ? Coordinates.fromJson(json['coordinates'])
-          : Coordinates(lat: 0.0, lng: 0.0),
+      coordinates: coords,
       prayerTimes: Map<String, dynamic>.from(json['prayerTimes'] ?? {}),
       amenities: Map<String, dynamic>.from(json['amenities'] ?? {}),
       photos: List<String>.from(json['photos'] ?? []),
@@ -75,4 +100,3 @@ class MosqueModel {
         'verified': verified,
       };
 }
-

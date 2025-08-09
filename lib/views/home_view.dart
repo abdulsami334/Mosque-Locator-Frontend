@@ -37,13 +37,14 @@ class _HomeViewState extends State<HomeView> {
     if (permission == LocationPermission.deniedForever) return;
 
     final pos = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
     if (!mounted) return;
 
     setState(() => currentPosition = LatLng(pos.latitude, pos.longitude));
-    // Load ONLY nearby masjids (500 m radius)
+
     Provider.of<MosqueProvider>(context, listen: false)
-        .loadNearbyMosques(pos.latitude, pos.longitude, radius: 500);
+        .loadNearbyMosques(pos.latitude, pos.longitude, radius: 5000);
   }
 
   Future<void> _drawRoute(LatLng dest) async {
@@ -64,6 +65,14 @@ class _HomeViewState extends State<HomeView> {
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
+
+  String formatDistance(double meters) {
+    if (meters < 1000) {
+      return '${meters.toStringAsFixed(0)} m';
+    } else {
+      return '${(meters / 1000).toStringAsFixed(1)} km';
     }
   }
 
@@ -105,13 +114,14 @@ class _HomeViewState extends State<HomeView> {
                             itemCount: provider.mosques.length,
                             itemBuilder: (_, i) {
                               final m = provider.mosques[i];
-                              final d = Geolocator.distanceBetween(
-                                    currentPosition!.latitude,
-                                    currentPosition!.longitude,
-                                    m.coordinates.lat,
-                                    m.coordinates.lng,
-                                  ) /
-                                  1000;
+                              final distanceMeters =
+                                  Geolocator.distanceBetween(
+                                currentPosition!.latitude,
+                                currentPosition!.longitude,
+                                m.coordinates.lat,
+                                m.coordinates.lng,
+                              );
+
                               return GestureDetector(
                                 onTap: () async {
                                   final res = await Navigator.push<MosqueModel>(
@@ -123,8 +133,9 @@ class _HomeViewState extends State<HomeView> {
                                   );
                                   if (res != null && context.mounted) {
                                     final latLng = LatLng(
-                                        res.coordinates.lat,
-                                        res.coordinates.lng);
+                                      res.coordinates.lat,
+                                      res.coordinates.lng,
+                                    );
                                     mapController?.animateCamera(
                                       CameraUpdate.newLatLngZoom(latLng, 16),
                                     );
@@ -150,16 +161,22 @@ class _HomeViewState extends State<HomeView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(m.name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold)),
+                                      Text(
+                                        m.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       const SizedBox(height: 4),
-                                      Text('${d.toStringAsFixed(1)} km away',
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey)),
+                                      Text(
+                                        '${formatDistance(distanceMeters)} away',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

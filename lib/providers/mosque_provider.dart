@@ -8,12 +8,13 @@ class MosqueProvider extends ChangeNotifier {
   List<MosqueModel> _mosques = [];
   List<MosqueModel> get mosques => _mosques;
 
-  Future<void> loadNearbyMosques(double lat, double lng, {int radius = 500}) async {
-  try {
-    _mosques = await _service.getNearbyMosques(lat, lng, radius: radius);
-    notifyListeners();
-  } catch (e) {
-    debugPrint('Error loading nearby mosques: $e');
+  Future<void> loadNearbyMosques(double lat, double lng,
+      {int radius = 5000}) async {
+    try {
+      _mosques = await _service.getNearbyMosques(lat, lng, radius: radius);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading nearby mosques: $e');
+    }
   }
-}
 }

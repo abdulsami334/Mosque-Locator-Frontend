@@ -8,7 +8,7 @@ class UserModel {
   final String area;
   final String reason;
   final bool approved;
-
+final bool? isContributor;
   UserModel({
     this.id,
     required this.name,
@@ -19,6 +19,7 @@ class UserModel {
     required this.area,
     required this.reason,
     this.approved = false,
+    this.isContributor
   });
 
   // ✅ Convert JSON → Model
@@ -33,6 +34,7 @@ class UserModel {
       area: json['area'] ?? '',
       reason: json['reason'] ?? '',
       approved: json['approved'] ?? false,
+      isContributor: json['isContributor']?? false
     );
   }
 
@@ -47,6 +49,7 @@ class UserModel {
       "area": area,
       "reason": reason,
       "approved": approved,
+      "isContributor":isContributor
     };
   }
 }

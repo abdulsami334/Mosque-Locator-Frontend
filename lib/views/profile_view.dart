@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:mosque_locator/providers/user_provider.dart';
+import 'package:mosque_locator/utils/app_styles.dart';
+import 'package:provider/provider.dart';
 
-class ProfileView extends StatefulWidget {
+class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
-  @override
-  State<ProfileView> createState() => _ProfileViewState();
-}
 
-class _ProfileViewState extends State<ProfileView> {
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+      final auth= Provider.of<AuthProvider>(context);
+      final user = auth.user;
+    return  Scaffold(
+         appBar: AppBar(
+        title: const Text('My Profile'),
+        centerTitle: true,
+        backgroundColor: AppStyles.primaryGreen,
+        foregroundColor: Colors.white,
+      ),
+      body: user==null?const Center(child: CircularProgressIndicator()):
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [],
+        ),
+      )
+
+    );
   }
 }

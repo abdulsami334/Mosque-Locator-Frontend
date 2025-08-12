@@ -6,6 +6,7 @@ import 'package:mosque_locator/utils/constant.dart';
 import 'package:mosque_locator/views/contributor_register_form.dart';
 import 'package:mosque_locator/views/home_view.dart';
 import 'package:mosque_locator/views/login_view.dart';
+import 'package:mosque_locator/views/profile_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
     '/login':    (_) => const LoginView(),
     '/home':     (_) => const HomeView(),   // your map screen
   },
-        home:  ContributorRegisterForm(),
+        home:  ProfileView(),
       ),
     );
   }

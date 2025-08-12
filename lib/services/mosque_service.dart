@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mosque_locator/models/mosque_model.dart';
+import 'package:mosque_locator/utils/constant.dart';
 
 class MosqueService {
-  static const String _baseUrl = 'http://192.168.18.20:5000/api/mosques';
+ String _baseUrl = AppConstants.MosqueUrl;
 
   Future<List<MosqueModel>> getNearbyMosques(
       double lat, double lng, {int radius = 500}) async {

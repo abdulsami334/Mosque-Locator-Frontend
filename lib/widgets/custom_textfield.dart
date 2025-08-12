@@ -3,25 +3,36 @@ import 'package:flutter/material.dart';
 class CustomTextfield extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  final TextInputType keyboardType;
+  final IconData? prefixIcon;
   final bool obscureText;
-  
-  const CustomTextfield({super.key, required this.controller, required this.label,  this.keyboardType= TextInputType.text, this.obscureText=false});
+  final int maxLines;
+  final TextInputType keyboardType;
+  final String? Function(String?)? validator;
+
+  const CustomTextfield({
+    super.key,
+    required this.controller,
+    required this.label,
+    this.prefixIcon,
+    this.obscureText = false,
+    this.maxLines = 1,
+    this.keyboardType = TextInputType.text,
+    this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return   Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-        child: TextField(
-          controller: controller,
-            keyboardType: keyboardType,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-            labelText: label,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        ),
-      );
-    
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      validator: validator ?? (v) => v!.isEmpty ? 'Required' : null,
+    );
   }
 }

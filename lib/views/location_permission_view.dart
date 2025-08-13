@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
-import 'package:mosque_locator/views/home_view.dart';
+import 'package:mosque_locator/views/map_view.dart';
+import 'package:mosque_locator/widgets/Navigation/main_navigation.dart';
 
 class LocationPermissionView extends StatefulWidget {
   const LocationPermissionView({super.key});
@@ -28,7 +29,7 @@ LocationPermission permission=await Geolocator.checkPermission();
       );
          Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeView()),
+        MaterialPageRoute(builder: (context) => const MainNavigation()),
       );
     }else{
       setState(() {

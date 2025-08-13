@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
 
     if (success) {
       // Go to Home
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/Navigation');
     }
   }
 

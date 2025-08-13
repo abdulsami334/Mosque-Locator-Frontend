@@ -7,6 +7,7 @@ class UserModel {
   final String city;
   final String area;
   final String reason;
+  final String? imageUrl;
   final bool approved;
 final bool? isContributor;
   UserModel({
@@ -18,6 +19,7 @@ final bool? isContributor;
     required this.city,
     required this.area,
     required this.reason,
+    this.imageUrl,
     this.approved = false,
     this.isContributor
   });
@@ -33,6 +35,7 @@ final bool? isContributor;
       city: json['city'] ?? '',
       area: json['area'] ?? '',
       reason: json['reason'] ?? '',
+      imageUrl: json['imageUrl']??'',
       approved: json['approved'] ?? false,
       isContributor: json['isContributor']?? false
     );
@@ -47,6 +50,7 @@ final bool? isContributor;
       "phone": phone,
       "city": city,
       "area": area,
+      "imageUrl":imageUrl,
       "reason": reason,
       "approved": approved,
       "isContributor":isContributor

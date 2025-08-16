@@ -104,12 +104,12 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(height: 10),
           CircleAvatar(
             radius: 50,
-            backgroundColor: Colors.grey[200],
-          backgroundImage: auth.user?.imageUrl != null
+       backgroundImage: (auth.user?.imageUrl != null && auth.user!.imageUrl!.isNotEmpty)
     ? (auth.user!.imageUrl!.startsWith('http')
         ? NetworkImage(auth.user!.imageUrl!)
-        : FileImage(File(auth.user!.imageUrl!)) as ImageProvider)
-    : const AssetImage('assets/images/default_picture.png') as ImageProvider,
+        : FileImage(File(auth.user!.imageUrl!)))
+    : const AssetImage('assets/images/default_picture.png'),
+
           ),
           const SizedBox(height: 10),
           ElevatedButton.icon(

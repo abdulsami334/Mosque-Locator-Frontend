@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
     '/home':     (_) => const MosqueView(),  
         '/Navigation':     (_) => const MainNavigation(), // your map screen
   },
-        home: MainNavigation(),
+        home: SplashView(),
       ),
     );
   }

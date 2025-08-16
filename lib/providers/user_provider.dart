@@ -1,10 +1,11 @@
 // auth_provider.dart
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosque_locator/models/user_model.dart';
 import 'package:mosque_locator/utils/constant.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart' as path;
 
 class AuthProvider with ChangeNotifier {
   final String baseUrl = AppConstants.ContributorUrl;
@@ -89,39 +90,63 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
-Future<bool> updateProfilePicture(String filePath) async {
-  try {
-    isLoading = true;
-    notifyListeners();
+ Future<bool> updateProfilePicture(String filePath) async {
+    try {
+      isLoading = true;
+      notifyListeners();
 
-    var request = http.MultipartRequest(
-      'PUT',
-      Uri.parse('$baseUrl/update-profile-picture'), // backend route
-    );
-    request.headers['Authorization'] = 'Bearer $_token';
-    request.files.add(await http.MultipartFile.fromPath('image', filePath));
+      var request = http.MultipartRequest(
+        'PUT',
+        Uri.parse('$baseUrl/update-profile-picture'),
+      );
 
-    var response = await request.send();
-    var responseData = await http.Response.fromStream(response);
+      request.headers['Authorization'] = 'Bearer $_token';
 
-    isLoading = false;
-    notifyListeners();
+      // ✅ File ka extension nikaalo
+      String extension = path.extension(filePath).toLowerCase();
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(responseData.body);
-      _user = UserModel.fromJson(data['contributor']);
-      return true;
-    } else {
-      debugPrint("❌ Failed: ${responseData.body}");
+      // ✅ default mime type
+      String mimeSubtype = 'jpeg';
+
+      // ✅ extension ke hisaab se mime type set karo
+      if (extension == '.png') {
+        mimeSubtype = 'png';
+      } else if (extension == '.gif') {
+        mimeSubtype = 'gif';
+      } else if (extension == '.webp') {
+        mimeSubtype = 'webp';
+      }
+
+      // ✅ MultipartFile create karo
+      final imagePart = await http.MultipartFile.fromPath(
+        'image', // backend multer expects "image"
+        filePath,
+       contentType: MediaType('image', mimeSubtype),
+      );
+
+      // ✅ file ko request mai add karo
+      request.files.add(imagePart);
+
+      // ✅ request bhejo
+      var response = await request.send();
+      var responseData = await http.Response.fromStream(response);
+
+      isLoading = false;
+      notifyListeners();
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(responseData.body);
+        _user = UserModel.fromJson(data['contributor']);
+        return true;
+      } else {
+        debugPrint("❌ Failed: ${responseData.body}");
+        return false;
+      }
+    } catch (e) {
+      isLoading = false;
+      notifyListeners();
+      debugPrint("❌ Error: $e");
       return false;
     }
-  } catch (e) {
-    isLoading = false;
-    notifyListeners();
-    debugPrint("❌ Error: $e");
-    return false;
   }
-}
-
-
 }

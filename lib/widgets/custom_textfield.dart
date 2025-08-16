@@ -6,6 +6,7 @@ class CustomTextfield extends StatelessWidget {
   final IconData? prefixIcon;
   final bool obscureText;
   final int maxLines;
+  final String? fielderrmsg;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
 
@@ -13,6 +14,7 @@ class CustomTextfield extends StatelessWidget {
     super.key,
     required this.controller,
     required this.label,
+    this.fielderrmsg,
     this.prefixIcon,
     this.obscureText = false,
     this.maxLines = 1,
@@ -32,7 +34,7 @@ class CustomTextfield extends StatelessWidget {
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      validator: validator ?? (v) => v!.isEmpty ? 'Required' : null,
+      validator: validator ?? (v) => v!.isEmpty ?'required' : null,
     );
   }
 }

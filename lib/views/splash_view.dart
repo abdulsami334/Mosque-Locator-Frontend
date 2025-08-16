@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/utils/app_assets.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
@@ -13,40 +12,50 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  Timer? _timer;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    Timer(Duration(seconds: 10),(){
-       Navigator.pushReplacement(
+    _timer = Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LocationPermissionView()));
+          builder: (_) => const LocationPermissionView(),
+        ),
+      );
     });
   }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: AppStyles.primaryGreen,
-       body: Center(
-         child: Column(
+      backgroundColor: AppStyles.primaryGreen,
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             Image.asset(AppAssets.logo, height: 100),
-                const SizedBox(height: 20),
-                Text(
-                "Mosque Locator",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.5,
-                ),)
+            Image.asset(AppAssets.logo, height: 100),
+            const SizedBox(height: 20),
+            const Text(
+              "Mosque Locator",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5,
+              ),
+            ),
           ],
-         ),
-       ),
+        ),
+      ),
     );
   }
 }

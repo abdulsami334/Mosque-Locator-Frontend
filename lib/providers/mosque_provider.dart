@@ -42,6 +42,8 @@ class MosqueProvider extends ChangeNotifier {
   String? asr,
   String? maghrib,
   String? isha,
+
+   required Map<String, bool> amenities,
   }) async {
     try {
       print("TOKEN USED: $_token");
@@ -65,7 +67,9 @@ class MosqueProvider extends ChangeNotifier {
           "asr": asr,
           "maghrib": maghrib,
           "isha": isha,
-        }
+
+        },
+         "amenities": amenities,
 
           
         }),

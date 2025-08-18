@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mosque_locator/models/mosque_model.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/map_view.dart';
@@ -10,7 +11,8 @@ import 'package:mosque_locator/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
 class AddMosqueView extends StatefulWidget {
-  const AddMosqueView({super.key});
+  final MosqueModel? mosque;
+  const AddMosqueView({Key? key, this.mosque}):super(key: key);
 
   @override
   State<AddMosqueView> createState() => _AddMosqueViewState();
@@ -30,9 +32,25 @@ class _AddMosqueViewState extends State<AddMosqueView> {
   final maghribCtrl = TextEditingController();
   final ishaCtrl    = TextEditingController();
 
+
+bool hasParking = false;
+bool hasWomenSection = false;
+bool hasWheelchair = false;
+bool hasAC = false;
+bool hasWashroom = false;
   double? lat;
   double? lng;
   bool isLoading = false;
+
+
+// @override
+//  void initState(){
+//   super.initState();
+//   if(widget.mosque!=null)
+//   {
+//     nameCtrl=widget.mosque!.name;
+//   }
+//  }
 
   /* ---------- Pick & Reverse-Geocode Location ---------- */
   Future<void> _pickLocation() async {
@@ -102,6 +120,13 @@ class _AddMosqueViewState extends State<AddMosqueView> {
       asr: asrCtrl.text.trim(),
       maghrib: maghribCtrl.text.trim(),
       isha: ishaCtrl.text.trim(),
+      amenities: {
+    "parking": hasParking,
+    "womenSection": hasWomenSection,
+    "wheelchairAccess": hasWheelchair,
+    "ac": hasAC,
+    "washroom": hasWashroom,
+  },
     );
 
     setState(() => isLoading = false);
@@ -136,17 +161,17 @@ class _AddMosqueViewState extends State<AddMosqueView> {
         title: const Text('Add Mosque'),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppStyles.primaryGreen,
         foregroundColor: Colors.white,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF0A7E8C), Color(0xFF0A9C8C)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
+        // flexibleSpace: Container(
+        //   decoration: const BoxDecoration(
+        //     gradient: LinearGradient(
+        //       colors:Appstyle.primarycolor,
+        //       begin: Alignment.topLeft,
+        //       end: Alignment.bottomRight,
+        //     ),
+        //   ),
+        // ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -215,6 +240,43 @@ class _AddMosqueViewState extends State<AddMosqueView> {
               _buildTimeInput(ishaCtrl, 'Isha'),
 
               const SizedBox(height: 36),
+              const SizedBox(height: 24),
+const Text(
+  '🏷️ Amenities',
+  style: TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    color: Color(0xFF0A7E8C),
+  ),
+),
+const SizedBox(height: 12),
+
+SwitchListTile(
+  value: hasParking,
+  onChanged: (val) => setState(() => hasParking = val),
+  title: const Text("Parking Available"),
+),
+SwitchListTile(
+  value: hasWomenSection,
+  onChanged: (val) => setState(() => hasWomenSection = val),
+  title: const Text("Women's Section"),
+),
+SwitchListTile(
+  value: hasWheelchair,
+  onChanged: (val) => setState(() => hasWheelchair = val),
+  title: const Text("Wheelchair Access"),
+),
+SwitchListTile(
+  value: hasAC,
+  onChanged: (val) => setState(() => hasAC = val),
+  title: const Text("Air Conditioning"),
+),
+SwitchListTile(
+  value: hasWashroom,
+  //onChanged: (val) => setState(() => hasWashroom = val),
+  title: const Text("Washroom"),
+),
+
               SizedBox(
                 width: double.infinity,
                 height: 52,

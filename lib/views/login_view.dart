@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/widgets/custom_textfield.dart';
@@ -24,7 +25,7 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Future<void> _login(AuthProvider auth) async {
+  Future<void> _login(AuthProvider auth, MosqueProvider mosque) async {
     if (!_formKey.currentState!.validate()) return;
 
     final success = await auth.loginContributor(
@@ -42,7 +43,9 @@ class _LoginViewState extends State<LoginView> {
     );
 
     if (success) {
+      mosque.setToken(auth.token!);
       // Go to Home
+
       Navigator.pushReplacementNamed(context, '/Navigation');
     }
   }
@@ -50,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
-
+final mosqueProvider = Provider.of<MosqueProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -90,7 +93,7 @@ class _LoginViewState extends State<LoginView> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: auth.isLoading ? null : () => _login(auth),
+                      onPressed: auth.isLoading ? null : () => _login(auth, mosqueProvider),
                       child: auth.isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
                           : const Text('Login',

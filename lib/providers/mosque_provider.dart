@@ -44,8 +44,9 @@ class MosqueProvider extends ChangeNotifier {
   String? isha,
   }) async {
     try {
+      print("TOKEN USED: $_token");
       final response = await http.post(
-        Uri.parse("$_baseUrl/add"),
+        Uri.parse("$_baseUrl"),
         headers: {
           "Content-Type": "application/json",
           if (_token != null) "Authorization": "Bearer $_token",

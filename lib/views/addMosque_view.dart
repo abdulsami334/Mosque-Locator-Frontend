@@ -173,141 +173,143 @@ bool hasWashroom = false;
         //   ),
         // ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 24),
-              _buildInput(nameCtrl, 'Mosque Name', Icons.mosque),
-              _buildInput(addressCtrl, 'Address', Icons.home),
-              _buildInput(cityCtrl, 'City', Icons.location_city),
-              _buildInput(areaCtrl, 'Area', Icons.map),
-              const SizedBox(height: 12),
-
-              /* Location Card */
-              GestureDetector(
-                onTap: isLoading ? null : _pickLocation,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: borderRadius,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.15),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.location_on, color: Color(0xFF0A9C8C)),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          locCtrl.text.isEmpty ? 'Tap to pick location' : locCtrl.text,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: locCtrl.text.isEmpty ? Colors.grey : Colors.black87,
-                          ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 24),
+                _buildInput(nameCtrl, 'Mosque Name', Icons.mosque),
+                _buildInput(addressCtrl, 'Address', Icons.home),
+                _buildInput(cityCtrl, 'City', Icons.location_city),
+                _buildInput(areaCtrl, 'Area', Icons.map),
+                const SizedBox(height: 12),
+        
+                /* Location Card */
+                GestureDetector(
+                  onTap: isLoading ? null : _pickLocation,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: borderRadius,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.15),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
                         ),
-                      ),
-                      const Icon(Icons.chevron_right, color: Colors.grey),
-                    ],
-                  ),
-                ),
-              ),
-              if (lat != null) const SizedBox(height: 8),
-
-              const SizedBox(height: 24),
-              const Text(
-                '🕌 Namaz Timings',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                  color: Color(0xFF0A7E8C),
-                ),
-              ),
-              const SizedBox(height: 12),
-              _buildTimeInput(fajrCtrl, 'Fajr'),
-              _buildTimeInput(dhuhrCtrl, 'Dhuhr'),
-              _buildTimeInput(asrCtrl, 'Asr'),
-              _buildTimeInput(maghribCtrl, 'Maghrib'),
-              _buildTimeInput(ishaCtrl, 'Isha'),
-
-              const SizedBox(height: 36),
-              const SizedBox(height: 24),
-const Text(
-  '🏷️ Amenities',
-  style: TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 18,
-    color: Color(0xFF0A7E8C),
-  ),
-),
-const SizedBox(height: 12),
-
-SwitchListTile(
-  value: hasParking,
-  onChanged: (val) => setState(() => hasParking = val),
-  title: const Text("Parking Available"),
-),
-SwitchListTile(
-  value: hasWomenSection,
-  onChanged: (val) => setState(() => hasWomenSection = val),
-  title: const Text("Women's Section"),
-),
-SwitchListTile(
-  value: hasWheelchair,
-  onChanged: (val) => setState(() => hasWheelchair = val),
-  title: const Text("Wheelchair Access"),
-),
-SwitchListTile(
-  value: hasAC,
-  onChanged: (val) => setState(() => hasAC = val),
-  title: const Text("Air Conditioning"),
-),
-SwitchListTile(
-  value: hasWashroom,
-  //onChanged: (val) => setState(() => hasWashroom = val),
-  title: const Text("Washroom"),
-),
-
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0A9C8C),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(26),
+                      ],
                     ),
-                    elevation: 4,
-                  ),
-                  onPressed: (isLoading || lat == null)
-                      ? null
-                      : () => _saveMosque(context),
-                  child: isLoading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 3,
-                        )
-                      : const Text(
-                          'Save Mosque',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_on, color: Color(0xFF0A9C8C)),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            locCtrl.text.isEmpty ? 'Tap to pick location' : locCtrl.text,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: locCtrl.text.isEmpty ? Colors.grey : Colors.black87,
+                            ),
                           ),
                         ),
+                        const Icon(Icons.chevron_right, color: Colors.grey),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-            ],
+                if (lat != null) const SizedBox(height: 8),
+        
+                const SizedBox(height: 24),
+                const Text(
+                  '🕌 Namaz Timings',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Color(0xFF0A7E8C),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _buildTimeInput(fajrCtrl, 'Fajr'),
+                _buildTimeInput(dhuhrCtrl, 'Dhuhr'),
+                _buildTimeInput(asrCtrl, 'Asr'),
+                _buildTimeInput(maghribCtrl, 'Maghrib'),
+                _buildTimeInput(ishaCtrl, 'Isha'),
+        
+                const SizedBox(height: 36),
+                const SizedBox(height: 24),
+        const Text(
+          '🏷️ Amenities',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+            color: Color(0xFF0A7E8C),
+          ),
+        ),
+        const SizedBox(height: 12),
+        
+        SwitchListTile(
+          value: hasParking,
+          onChanged: (val) => setState(() => hasParking = val),
+          title: const Text("Parking Available"),
+        ),
+        SwitchListTile(
+          value: hasWomenSection,
+          onChanged: (val) => setState(() => hasWomenSection = val),
+          title: const Text("Women's Section"),
+        ),
+        SwitchListTile(
+          value: hasWheelchair,
+          onChanged: (val) => setState(() => hasWheelchair = val),
+          title: const Text("Wheelchair Access"),
+        ),
+        SwitchListTile(
+          value: hasAC,
+          onChanged: (val) => setState(() => hasAC = val),
+          title: const Text("Air Conditioning"),
+        ),
+        SwitchListTile(
+          value: hasWashroom,
+          onChanged: (val) => setState(() => hasWashroom = val),
+          title: const Text("Washroom"),
+        ),
+        
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0A9C8C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                      elevation: 4,
+                    ),
+                    onPressed: (isLoading || lat == null)
+                        ? null
+                        : () => _saveMosque(context),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3,
+                          )
+                        : const Text(
+                            'Save Mosque',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

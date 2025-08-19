@@ -88,4 +88,28 @@ class MosqueProvider extends ChangeNotifier {
       notifyListeners(); // spinner off
     }
   }
+
+ Future<List<MosqueModel>> getMyMosques() async {
+  try {
+        print("TOKEN USED: $_token");
+    final response = await http.get(
+      Uri.parse("$_baseUrl/my"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $_token", // contributor token
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.map((e) => MosqueModel.fromJson(e)).toList();
+    } else {
+      errorMessage = jsonDecode(response.body)['message'] ?? "Failed";
+      return [];
+    }
+  } catch (e) {
+    errorMessage = e.toString();
+    return [];
+  }
+}
 }

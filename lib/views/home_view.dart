@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/addMosque_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
+import 'package:mosque_locator/views/my_mosque_view.dart';
 import 'package:mosque_locator/widgets/Navigation/main_navigation.dart';
 
 class ContributorHomeView extends StatelessWidget {
@@ -39,6 +40,16 @@ class ContributorHomeView extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const MosqueView()),
+              ),
+            ),
+            const SizedBox(height: 24),
+              _optionCard(
+              context,
+              title: "My Mosques",
+              icon: Icons.map,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const MyMosqueView()),
               ),
             ),
           ],

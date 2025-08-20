@@ -18,7 +18,7 @@ class MosqueProvider extends ChangeNotifier {
 
   void setToken(String token) {
     _token = token;
-    notifyListeners();
+   // notifyListeners();
   }
 
   Future<void> loadNearbyMosques(double lat, double lng, {int radius = 5000}) async {
@@ -89,27 +89,56 @@ class MosqueProvider extends ChangeNotifier {
     }
   }
 
- Future<List<MosqueModel>> getMyMosques() async {
+Future<List<MosqueModel>> getMyMosques() async {
   try {
-        print("TOKEN USED: $_token");
+    print("1) Inside getMyMosques");
+    print("TOKEN USED: $_token");
+
     final response = await http.get(
-      Uri.parse("$_baseUrl/my"),
+      Uri.parse("http://192.168.0.116:5000/api/mosques/my"),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $_token", // contributor token
+        "Authorization": "Bearer $_token",
       },
     );
 
+    print("2) Status code: ${response.statusCode}");
+    print("3) Raw body: ${response.body}");
+
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
+      print("4) Backend list length: ${data.length}");
       return data.map((e) => MosqueModel.fromJson(e)).toList();
     } else {
-      errorMessage = jsonDecode(response.body)['message'] ?? "Failed";
+      print("5) Error body: ${response.body}");
       return [];
     }
-  } catch (e) {
-    errorMessage = e.toString();
+  } catch (e, s) {
+    print("6) Exception: $e");
+    print("7) Stack: $s");
     return [];
   }
 }
+Future<bool> updateMosque(String id, Map<String, dynamic> updates)async{
+try{
+final response = await http.put(Uri.parse("$_baseUrl/$id"),
+headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $_token",
+      },
+      body: jsonEncode(  updates),
+); 
+
+if(response.statusCode==200){
+  return true;
+}else {
+      errorMessage = jsonDecode(response.body)['message'];
+      return false;
+    }
 }
+ catch (e) {
+    errorMessage = e.toString();
+    return false;
+  }
+}}
+

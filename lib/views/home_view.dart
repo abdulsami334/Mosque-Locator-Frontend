@@ -1,15 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:mosque_locator/providers/mosque_provider.dart';
+import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/addMosque_view.dart';
+import 'package:mosque_locator/views/login_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
 import 'package:mosque_locator/views/my_mosque_view.dart';
-import 'package:mosque_locator/widgets/Navigation/main_navigation.dart';
+import 'package:provider/provider.dart';
 
-class ContributorHomeView extends StatelessWidget {
+class ContributorHomeView extends StatefulWidget {
   const ContributorHomeView({Key? key}) : super(key: key);
 
   @override
+  State<ContributorHomeView> createState() => _ContributorHomeViewState();
+}
+
+class _ContributorHomeViewState extends State<ContributorHomeView> {
+  void _showMessage(String msg, {bool dialog = false}) {
+    if (dialog) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Notice'),
+          content: Text(msg),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_)=> LoginView())),
+              child: const Text('Login'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg)),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contributor Dashboard"),
@@ -27,10 +59,14 @@ class ContributorHomeView extends StatelessWidget {
               context,
               title: "Add Mosque",
               icon: Icons.add_location_alt,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const AddMosqueView()),
-              ),
+              onTap: () { if (authProvider.token == null) {
+                  _showMessage('Please log in first', dialog: true);
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AddMosqueView()),
+                  );
+                }}
             ),
             const SizedBox(height: 24),
             _optionCard(
@@ -43,14 +79,20 @@ class ContributorHomeView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-              _optionCard(
+            _optionCard(
               context,
               title: "My Mosques",
-              icon: Icons.map,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const MyMosqueView()),
-              ),
+              icon: Icons.list_alt,
+              onTap: () {
+                if (authProvider.token == null) {
+                  _showMessage('Please log in first', dialog: true);
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MyMosqueView()),
+                  );
+                }
+              },
             ),
           ],
         ),

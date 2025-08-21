@@ -7,7 +7,6 @@ import 'package:mosque_locator/models/mosque_model.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/map_view.dart';
-import 'package:mosque_locator/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
 class AddMosqueView extends StatefulWidget {
@@ -92,64 +91,123 @@ bool hasWashroom = false;
   }
 
   /* ---------- Save Mosque ---------- */
-  Future<void> _saveMosque(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) return;
-    if (lat == null || lng == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please pick a location first'),
-          backgroundColor: Colors.red.shade300,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
-
-    setState(() => isLoading = true);
-    final provider = Provider.of<MosqueProvider>(context, listen: false);
-
-    final ok = await provider.addMosque(
-      name: nameCtrl.text.trim(),
-      address: addressCtrl.text.trim(),
-      city: cityCtrl.text.trim(),
-      area: areaCtrl.text.trim(),
-      lat: lat!,
-      lng: lng!,
-      fajr: fajrCtrl.text.trim(),
-      dhuhr: dhuhrCtrl.text.trim(),
-      asr: asrCtrl.text.trim(),
-      maghrib: maghribCtrl.text.trim(),
-      isha: ishaCtrl.text.trim(),
-      amenities: {
-    "parking": hasParking,
-    "womenSection": hasWomenSection,
-    "wheelchairAccess": hasWheelchair,
-    "ac": hasAC,
-    "washroom": hasWashroom,
-  },
+Future<void> _saveMosque(BuildContext context) async {
+  if (!_formKey.currentState!.validate()) return;
+  if (lat == null || lng == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Please pick a location first'),
+        backgroundColor: Colors.red.shade300,
+        behavior: SnackBarBehavior.floating,
+      ),
     );
-
-    setState(() => isLoading = false);
-    if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('✅ Mosque added'),
-          backgroundColor: Colors.green.shade400,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.pop(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(provider.errorMessage ?? '❌ Failed'),
-          backgroundColor: Colors.red.shade300,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    }
+    return;
   }
 
+  setState(() => isLoading = true);
+  final provider = Provider.of<MosqueProvider>(context, listen: false);
+
+  final ok = widget.mosque == null
+      ? await provider.addMosque(
+          name: nameCtrl.text.trim(),
+          address: addressCtrl.text.trim(),
+          city: cityCtrl.text.trim(),
+          area: areaCtrl.text.trim(),
+          lat: lat!,
+          lng: lng!,
+          fajr: fajrCtrl.text.trim(),
+          dhuhr: dhuhrCtrl.text.trim(),
+          asr: asrCtrl.text.trim(),
+          maghrib: maghribCtrl.text.trim(),
+          isha: ishaCtrl.text.trim(),
+          amenities: {
+            "parking": hasParking,
+            "womenSection": hasWomenSection,
+            "wheelchairAccess": hasWheelchair,
+            "ac": hasAC,
+            "washroom": hasWashroom,
+          },
+        )
+      : await provider.updateMosque(
+  widget.mosque!.id,
+  {
+    "name": nameCtrl.text.trim(),
+    "address": addressCtrl.text.trim(),
+    "city": cityCtrl.text.trim(),
+    "area": areaCtrl.text.trim(),
+    "coordinates": {
+      "lat": lat,
+      "lng": lng,
+    },
+    "prayerTimes": {
+      "fajr": fajrCtrl.text.trim(),
+      "dhuhr": dhuhrCtrl.text.trim(),
+      "asr": asrCtrl.text.trim(),
+      "maghrib": maghribCtrl.text.trim(),
+      "isha": ishaCtrl.text.trim(),
+    },
+    "amenities": {
+      "parking": hasParking,
+      "womenSection": hasWomenSection,
+      "wheelchairAccess": hasWheelchair,
+      "ac": hasAC,
+      "washroom": hasWashroom,
+    },
+  },
+);// ✅ Semicolon lagaya
+
+  setState(() => isLoading = false);
+
+  if (ok) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(widget.mosque == null ? 'Save' : 'Update'),
+        backgroundColor: Colors.green.shade400,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+    Navigator.pop(context);
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(provider.errorMessage ?? '❌ Failed'),
+        backgroundColor: Colors.red.shade300,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+}
+ @override
+void initState() {
+  super.initState();
+  if (widget.mosque != null) {
+    final m = widget.mosque!;
+    nameCtrl.text = m.name;
+    addressCtrl.text = m.address;
+    cityCtrl.text = m.city;
+    areaCtrl.text = m.area;
+
+    // ✅ Fix: assign lat/lng correctly
+    lat = m.coordinates.lat;
+    lng = m.coordinates.lng;
+
+    locCtrl.text = "${m.address}, ${m.city}";
+
+    // ✅ Fix: access prayerTimes correctly
+    fajrCtrl.text = m.prayerTimes['fajr'] ?? '';
+    dhuhrCtrl.text = m.prayerTimes['dhuhr'] ?? '';
+    asrCtrl.text = m.prayerTimes['asr'] ?? '';
+    maghribCtrl.text = m.prayerTimes['maghrib'] ?? '';
+    ishaCtrl.text = m.prayerTimes['isha'] ?? '';
+
+    // ✅ Amenities
+    hasParking = m.amenities['parking'] ?? false;
+    hasWomenSection = m.amenities['womenSection'] ?? false;
+    hasWheelchair = m.amenities['wheelchairAccess'] ?? false;
+    hasAC = m.amenities['ac'] ?? false;
+    hasWashroom = m.amenities['washroom'] ?? false;
+  }
+}
   /* ---------- Build ---------- */
   @override
   Widget build(BuildContext context) {
@@ -158,7 +216,7 @@ bool hasWashroom = false;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Add Mosque'),
+         title: Text(widget.mosque == null ? 'Add Mosque' : 'Edit Mosque'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: AppStyles.primaryGreen,
@@ -297,9 +355,9 @@ bool hasWashroom = false;
                             color: Colors.white,
                             strokeWidth: 3,
                           )
-                        : const Text(
-                            'Save Mosque',
-                            style: TextStyle(
+                        : Text(
+                             widget.mosque == null ? ' Mosque added' : ' Mosque updated',
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,

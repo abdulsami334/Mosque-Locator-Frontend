@@ -491,6 +491,7 @@ class _MosqueViewState extends State<MosqueView>
                               CameraUpdate.newLatLngZoom(latLng, 16),
                             );
                             _drawRoute(latLng);
+                            
                           }
                         },
                         child: Container(

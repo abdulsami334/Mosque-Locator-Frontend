@@ -95,7 +95,7 @@ Future<List<MosqueModel>> getMyMosques() async {
     print("TOKEN USED: $_token");
 
     final response = await http.get(
-      Uri.parse("http://192.168.0.116:5000/api/mosques/my"),
+      Uri.parse("http://192.168.0.117:5000/api/mosques/my"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $_token",
@@ -119,14 +119,14 @@ Future<List<MosqueModel>> getMyMosques() async {
     return [];
   }
 }
-Future<bool> updateMosque(String id, Map<String, dynamic> updates)async{
+Future<bool> updateMosque(String id, Map<String, dynamic> updates, )async{
 try{
 final response = await http.put(Uri.parse("$_baseUrl/$id"),
 headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $_token",
       },
-      body: jsonEncode(  updates),
+      body: jsonEncode(updates),
 ); 
 
 if(response.statusCode==200){

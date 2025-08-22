@@ -8,7 +8,7 @@ import 'package:mosque_locator/utils/constant.dart';
 
 class MosqueProvider extends ChangeNotifier {
   final MosqueService _service = MosqueService();
-  final String _baseUrl = AppConstants.MosqueUrl;
+  final String _baseUrl = 'http://192.168.0.117:5000/api/mosques/';
 
   List<MosqueModel> _mosques = [];
   List<MosqueModel> get mosques => _mosques;
@@ -29,65 +29,77 @@ class MosqueProvider extends ChangeNotifier {
       debugPrint('Error loading nearby mosques: $e');
     }
   }
-
-  Future<bool> addMosque({
-    required String name,
-    required String address,
-    required String city,
-    required String area,
-    required double lat,
-    required double lng,
-      String? fajr,
+Future<bool> addMosque({
+  required String name,
+  required String address,
+  required String city,
+  required String area,
+  required double lat,
+  required double lng,
+  String? fajr,
   String? dhuhr,
   String? asr,
   String? maghrib,
   String? isha,
+  required Map<String, bool> amenities,
+}) async {
+  try {
+    print("TOKEN USED: $_token");
 
-   required Map<String, bool> amenities,
-  }) async {
-    try {
-      print("TOKEN USED: $_token");
-      final response = await http.post(
-        Uri.parse("$_baseUrl"),
-        headers: {
-          "Content-Type": "application/json",
-          if (_token != null) "Authorization": "Bearer $_token",
-        },
-        body: jsonEncode({
-          "name": name,
-          "address": address,
-          "city": city,
-          "area": area,
-          "location": {
-            "type": "Point",
-            "coordinates": [lng, lat]
-          },"namazTimings": {
-          "fajr": fajr,
-          "dhuhr": dhuhr,
-          "asr": asr,
-          "maghrib": maghrib,
-          "isha": isha,
+    final mosqueData = {
+      "name": name,
+      "address": address,
+      "city": city,
+      "area": area,
+        "location": {
+    "type": "Point",
+    "coordinates": [lng, lat], // double values
+  },// 👈 Make sure backend expects [lng, lat]
+      "prayerTimes": {
+        "fajr": fajr ?? "",
+        "dhuhr": dhuhr ?? "",
+        "asr": asr ?? "",
+        "maghrib": maghrib ?? "",
+        "isha": isha ?? "",
+      },
+      "amenities": amenities,
+    };
 
-        },
-         "amenities": amenities,
+    print("Sending data: ${jsonEncode(mosqueData)}");
 
-          
-        }),
-      );
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {
+        "Content-Type": "application/json",
+        if (_token != null) "Authorization": "Bearer $_token",
+      },
+      body: jsonEncode(mosqueData),
+    );
 
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        errorMessage = jsonDecode(response.body)['message'] ?? 'Unknown error';
-        return false;
+    print("Status Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      try {
+        final decoded = jsonDecode(response.body);
+        errorMessage = decoded['message'] ?? decoded['error'] ?? response.body;
+      } catch (_) {
+        errorMessage = response.body;
       }
-    } catch (e) {
-      errorMessage = "Server error";
       return false;
-    } finally {
-      notifyListeners(); // spinner off
     }
+  } catch (e, s) {
+    print("Exception: $e");
+    print("Stack: $s");
+    errorMessage = "Server error: $e";
+    return false;
+  } finally {
+    notifyListeners();
   }
+}
+
 
 Future<List<MosqueModel>> getMyMosques() async {
   try {

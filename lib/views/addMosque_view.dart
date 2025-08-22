@@ -120,13 +120,14 @@ Future<void> _saveMosque(BuildContext context) async {
           asr: asrCtrl.text.trim(),
           maghrib: maghribCtrl.text.trim(),
           isha: ishaCtrl.text.trim(),
-          amenities: {
-            "parking": hasParking,
-            "womenSection": hasWomenSection,
-            "wheelchairAccess": hasWheelchair,
-            "ac": hasAC,
-            "washroom": hasWashroom,
-          },
+         amenities: {
+  "parking":       hasParking,
+  "womenArea":     hasWomenSection,   // ← changed
+  "wheelchair":    hasWheelchair,
+  "ac":            hasAC,
+  "toilet":        hasWashroom,       // ← changed
+  "wudu": false,                     // optional
+},
         )
       : await provider.updateMosque(
   widget.mosque!.id,
@@ -146,13 +147,14 @@ Future<void> _saveMosque(BuildContext context) async {
       "maghrib": maghribCtrl.text.trim(),
       "isha": ishaCtrl.text.trim(),
     },
-    "amenities": {
-      "parking": hasParking,
-      "womenSection": hasWomenSection,
-      "wheelchairAccess": hasWheelchair,
-      "ac": hasAC,
-      "washroom": hasWashroom,
-    },
+   "amenities": {
+  "wudu": false,              // Agar wudu option chahiye
+  "womenArea": hasWomenSection,
+  "parking": hasParking,
+  "toilet": hasWashroom,
+  "wheelchair": hasWheelchair,
+  "ac": hasAC,
+},
   },
 );// ✅ Semicolon lagaya
 
@@ -162,7 +164,7 @@ Future<void> _saveMosque(BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(widget.mosque == null ? 'Save' : 'Update'),
-        backgroundColor: Colors.green.shade400,
+        backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -341,7 +343,7 @@ void initState() {
                   height: 52,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0A9C8C),
+                      backgroundColor: AppStyles.primaryGreen,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(26),
                       ),
@@ -356,7 +358,7 @@ void initState() {
                             strokeWidth: 3,
                           )
                         : Text(
-                             widget.mosque == null ? ' Mosque added' : ' Mosque updated',
+                             widget.mosque == null ? ' Add Mosque' : ' Update Mosque',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,

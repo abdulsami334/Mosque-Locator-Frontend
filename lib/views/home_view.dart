@@ -82,7 +82,7 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
             _optionCard(
               context,
               title: "My Mosques",
-              icon: Icons.list_alt,
+              icon: Icons.mosque,
               onTap: () {
                 if (authProvider.token == null) {
                   _showMessage('Please log in first', dialog: true);

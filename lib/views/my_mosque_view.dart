@@ -3,6 +3,7 @@ import 'package:mosque_locator/models/mosque_model.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
+import 'package:mosque_locator/views/addMosque_view.dart';
 import 'package:mosque_locator/views/mosque_detail_view.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,7 @@ class _MyMosqueViewState extends State<MyMosqueView> {
   @override
   Widget build(BuildContext context) {
   
-    final provider= Provider.of<MosqueModel>(context);
+    //final provider= Provider.of<MosqueModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Mosques'),
@@ -115,7 +116,7 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                     itemCount: mosques.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, i) {
-                      final m = provider.mosque[i];
+                      final m = mosques[i];
                       return Card(
                         elevation: 2,
                         shape: RoundedRectangleBorder(
@@ -158,7 +159,7 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing:
-                              const Icon(Icons.chevron_right, color: Colors.grey),
+                               IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>AddMosqueView(mosque:m )));}, icon: Icon(Icons.edit, color: Colors.grey)),
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (_)=>MosqueDetailView(mosque:m )));
                           },

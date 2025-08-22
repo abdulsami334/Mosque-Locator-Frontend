@@ -240,7 +240,7 @@
 //     );
 //   }
 // }
-
+// lib/views/mosque_view.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -249,12 +249,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosque_locator/models/mosque_model.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/services/DirectionService.dart';
+import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/mosque_detail_view.dart';
 import 'package:provider/provider.dart';
 
 class MosqueView extends StatefulWidget {
   final bool isPickerMode;
   final LatLng? initialPos;
+
   const MosqueView({super.key, this.isPickerMode = false, this.initialPos});
 
   @override
@@ -299,7 +301,8 @@ class _MosqueViewState extends State<MosqueView>
     _updateMarker(currentPosition!);
 
     if (!widget.isPickerMode) {
-      Provider.of<MosqueProvider>(context, listen: false)
+      // Ensure the provider finishes loading before first build
+      await Provider.of<MosqueProvider>(context, listen: false)
           .loadNearbyMosques(pos.latitude, pos.longitude, radius: 5000);
     }
   }
@@ -342,11 +345,14 @@ class _MosqueViewState extends State<MosqueView>
 
   Future<String> _addressFromLatLng(LatLng pos) async {
     try {
-      final placemarks = await placemarkFromCoordinates(pos.latitude, pos.longitude);
+      final placemarks =
+          await placemarkFromCoordinates(pos.latitude, pos.longitude);
       final p = placemarks.first;
-      return '${p.street ?? ''}, ${p.locality ?? ''}, ${p.country ?? ''}'.trim();
+      return '${p.street ?? ''}, ${p.locality ?? ''}, ${p.country ?? ''}'
+          .trim();
     } catch (_) {
-      return 'Lat: ${pos.latitude.toStringAsFixed(4)}, Lng: ${pos.longitude.toStringAsFixed(4)}';
+      return 'Lat: ${pos.latitude.toStringAsFixed(4)}, '
+          'Lng: ${pos.longitude.toStringAsFixed(4)}';
     }
   }
 
@@ -378,12 +384,12 @@ class _MosqueViewState extends State<MosqueView>
         title: Text(widget.isPickerMode ? 'Pin the Location' : 'Nearby Mosques'),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppStyles.primaryGreen,
         foregroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF0A7E8C), Color(0xFF0A9C8C)],
+              colors: [AppStyles.primaryGreen],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -433,7 +439,7 @@ class _MosqueViewState extends State<MosqueView>
                         label: const Text('Confirm Location'),
                         onPressed: () => Navigator.pop(context, currentPosition),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0A9C8C),
+                          backgroundColor: AppStyles.primaryGreen,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 24, vertical: 14),
                           shape: RoundedRectangleBorder(
@@ -450,7 +456,8 @@ class _MosqueViewState extends State<MosqueView>
               ? const SizedBox.shrink()
               : Container(
                   height: 140,
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -470,6 +477,9 @@ class _MosqueViewState extends State<MosqueView>
                     itemCount: provider.mosques.length,
                     itemBuilder: (_, i) {
                       final m = provider.mosques[i];
+                      if (currentPosition == null) {
+  return const SizedBox.shrink();
+}
                       final distance = Geolocator.distanceBetween(
                         currentPosition!.latitude,
                         currentPosition!.longitude,
@@ -491,7 +501,6 @@ class _MosqueViewState extends State<MosqueView>
                               CameraUpdate.newLatLngZoom(latLng, 16),
                             );
                             _drawRoute(latLng);
-                            
                           }
                         },
                         child: Container(

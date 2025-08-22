@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/models/mosque_model.dart';
+import 'package:mosque_locator/views/map_view.dart';
 
 class MosqueDetailView extends StatelessWidget {
   final MosqueModel mosque;
@@ -133,6 +134,7 @@ class MosqueDetailView extends StatelessWidget {
         icon: const Icon(Icons.directions),
         label: const Text("Show Route"),
         onPressed: () {
+       
           Navigator.pop(context, mosque);
         },
       ),

@@ -389,7 +389,7 @@ class _MosqueViewState extends State<MosqueView>
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppStyles.primaryGreen],
+              colors: [AppStyles.primaryGreen, AppStyles.primaryGreen],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

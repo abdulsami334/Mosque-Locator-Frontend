@@ -8,7 +8,7 @@ class MosqueService {
 
   Future<List<MosqueModel>> getNearbyMosques(
       double lat, double lng, {int radius = 500}) async {
-    final uri = Uri.parse('http://192.168.0.117:5000/api/mosques/nearby?lat=$lat&lng=$lng&radius=$radius');
+    final uri = Uri.parse('http://192.168.18.20:5000/api/mosques/nearby?lat=$lat&lng=$lng&radius=$radius');
     final res = await http.get(uri);
     if (res.statusCode == 200) {
       final List<dynamic> data = jsonDecode(res.body);

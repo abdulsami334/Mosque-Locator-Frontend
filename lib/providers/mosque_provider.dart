@@ -8,7 +8,7 @@ import 'package:mosque_locator/utils/constant.dart';
 
 class MosqueProvider extends ChangeNotifier {
   final MosqueService _service = MosqueService();
-  final String _baseUrl = 'http://192.168.0.117:5000/api/mosques/';
+  final String _baseUrl = 'http://192.168.18.20:5000/api/mosques/';
 
   List<MosqueModel> _mosques = [];
   List<MosqueModel> get mosques => _mosques;
@@ -68,7 +68,7 @@ Future<bool> addMosque({
     print("Sending data: ${jsonEncode(mosqueData)}");
 
     final response = await http.post(
-      Uri.parse(_baseUrl),
+      Uri.parse("http://192.168.18.20:5000/api/mosques/"),
       headers: {
         "Content-Type": "application/json",
         if (_token != null) "Authorization": "Bearer $_token",
@@ -107,7 +107,7 @@ Future<List<MosqueModel>> getMyMosques() async {
     print("TOKEN USED: $_token");
 
     final response = await http.get(
-      Uri.parse("http://192.168.0.117:5000/api/mosques/my"),
+      Uri.parse("http://192.168.18.20:5000/api/mosques/my"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $_token",
@@ -131,26 +131,27 @@ Future<List<MosqueModel>> getMyMosques() async {
     return [];
   }
 }
-Future<bool> updateMosque(String id, Map<String, dynamic> updates, )async{
-try{
-final response = await http.put(Uri.parse("$_baseUrl/$id"),
-headers: {
+Future<bool> updateMosque(String id, Map<String, dynamic> updates) async {
+  try {
+    final response = await http.put(
+      Uri.parse("http://192.168.18.20:5000/api/mosques/$id"),
+      headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $_token",
       },
       body: jsonEncode(updates),
-); 
+    );
 
-if(response.statusCode==200){
-  return true;
-}else {
-      errorMessage = jsonDecode(response.body)['message'];
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      errorMessage = jsonDecode(response.body)['message'] ?? 'Update failed';
       return false;
     }
-}
- catch (e) {
+  } catch (e) {
     errorMessage = e.toString();
     return false;
   }
-}}
+}
+}
 

@@ -405,147 +405,352 @@ class _MosqueViewState extends State<MosqueView>
               ]
             : null,
       ),
-      body: currentPosition == null
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF0A9C8C),
-              ),
-            )
-          : Stack(
-              children: [
-                GoogleMap(
-                  onMapCreated: (c) => mapController = c,
-                  initialCameraPosition:
-                      CameraPosition(target: currentPosition!, zoom: 14),
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  compassEnabled: true,
-                  markers: markers,
-                  polylines: _polylines,
-                  onTap: widget.isPickerMode
-                      ? (pos) {
-                          setState(() => currentPosition = pos);
-                          _updateMarker(pos);
-                        }
-                      : null,
-                ),
-                if (widget.isPickerMode)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: FilledButton.icon(
-                        icon: const Icon(Icons.check),
-                        label: const Text('Confirm Location'),
-                        onPressed: () => Navigator.pop(context, currentPosition),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppStyles.primaryGreen,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 14),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-      bottomSheet: widget.isPickerMode
-          ? null
-          : provider.mosques.isEmpty
-              ? const SizedBox.shrink()
-              : Container(
-                  height: 140,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                        offset: Offset(0, -4),
-                      ),
-                    ],
-                  ),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: provider.mosques.length,
-                    itemBuilder: (_, i) {
-                      final m = provider.mosques[i];
-                      if (currentPosition == null) {
-  return const SizedBox.shrink();
-}
-                      final distance = Geolocator.distanceBetween(
-                        currentPosition!.latitude,
-                        currentPosition!.longitude,
-                        m.coordinates.lat,
-                        m.coordinates.lng,
-                      );
-                      return GestureDetector(
-                        onTap: () async {
-                          final res = await Navigator.push<MosqueModel>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MosqueDetailView(mosque: m),
-                            ),
+//       body: currentPosition == null
+//           ? const Center(
+//               child: CircularProgressIndicator(
+//                 color: Color(0xFF0A9C8C),
+//               ),
+//             )
+//           : Stack(
+//               children: [
+//                 GoogleMap(
+//                   onMapCreated: (c) => mapController = c,
+//                   initialCameraPosition:
+//                       CameraPosition(target: currentPosition!, zoom: 14),
+//                   myLocationEnabled: true,
+//                   myLocationButtonEnabled: false,
+//                   compassEnabled: true,
+//                   markers: markers,
+//                   polylines: _polylines,
+//                   onTap: widget.isPickerMode
+//                       ? (pos) {
+//                           setState(() => currentPosition = pos);
+//                           _updateMarker(pos);
+//                         }
+//                       : null,
+//                 ),
+//                 if (widget.isPickerMode)
+//                   Align(
+//                     alignment: Alignment.bottomCenter,
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(24.0),
+//                       child: FilledButton.icon(
+//                         icon: const Icon(Icons.check),
+//                         label: const Text('Confirm Location'),
+//                         onPressed: () => Navigator.pop(context, currentPosition),
+//                         style: ElevatedButton.styleFrom(
+//                           backgroundColor: AppStyles.primaryGreen,
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 24, vertical: 14),
+//                           shape: RoundedRectangleBorder(
+//                               borderRadius: BorderRadius.circular(20)),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//               ],
+//             )
+//              if (!widget.isPickerMode && provider.mosques.isNotEmpty)
+//             Positioned(
+//               left: 0,
+//               right: 0,
+//               bottom: 20, // thoda upar rakhne ke liye
+//               child: SizedBox(
+//                 height: 140,
+//                 child: ListView.builder(
+//                   scrollDirection: Axis.horizontal,
+//                   itemCount: provider.mosques.length,
+//                   itemBuilder: (_, i) {
+//                     final m = provider.mosques[i];
+//                     final distance = Geolocator.distanceBetween(
+//                       currentPosition!.latitude,
+//                       currentPosition!.longitude,
+//                       m.coordinates.lat,
+//                       m.coordinates.lng,
+//                     );
+//                     return GestureDetector(
+//                       onTap: () async {
+//                         final res = await Navigator.push<MosqueModel>(
+//                           context,
+//                           MaterialPageRoute(
+//                             builder: (_) => MosqueDetailView(mosque: m),
+//                           ),
+//                         );
+//                         if (res != null && mounted) {
+//                           final latLng = LatLng(
+//                               res.coordinates.lat, res.coordinates.lng);
+//                           mapController?.animateCamera(
+//                             CameraUpdate.newLatLngZoom(latLng, 16),
+//                           );
+//                           _drawRoute(latLng);
+//                         }
+//                       },
+//                       child: Container(
+//                         width: 180,
+//                         margin: const EdgeInsets.only(left: 12, right: 4),
+//                         padding: const EdgeInsets.all(14),
+//                         decoration: BoxDecoration(
+//                           color: Colors.white,
+//                           borderRadius: BorderRadius.circular(16),
+//                           boxShadow: [
+//                             BoxShadow(
+//                               color: Colors.black.withOpacity(0.08),
+//                               blurRadius: 8,
+//                               offset: const Offset(0, 4),
+//                             ),
+//                           ],
+//                         ),
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Text(
+//                               m.name,
+//                               maxLines: 1,
+//                               overflow: TextOverflow.ellipsis,
+//                               style: const TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 14,
+//                                 color: Color(0xFF0A7E8C),
+//                               ),
+//                             ),
+//                             const SizedBox(height: 4),
+//                             Text(
+//                               '${formatDistance(distance)} away',
+//                               style: const TextStyle(
+//                                 fontSize: 12,
+//                                 color: Colors.grey,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ),
+//       // bottomSheet: widget.isPickerMode
+//       //     ? null
+//       //     : provider.mosques.isEmpty
+//       //         ? const SizedBox.shrink()
+//       //         : Padding(
+//       //           padding: const EdgeInsets.only(bottom: 50.0),
+//       //           child: Container(
+//       //               height: 140,
+//       //               padding:
+//       //                   const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+//       //               decoration: const BoxDecoration(
+//       //                 color: Colors.white,
+//       //                 borderRadius: BorderRadius.only(
+//       //                   topLeft: Radius.circular(24),
+//       //                   topRight: Radius.circular(24),
+//       //                 ),
+//       //                 boxShadow: [
+//       //                   BoxShadow(
+//       //                     color: Colors.black12,
+//       //                     blurRadius: 10,
+//       //                     offset: Offset(0, -4),
+//       //                   ),
+//       //                 ],
+//       //               ),
+//       //               child: ListView.builder(
+//       //                 scrollDirection: Axis.horizontal,
+//       //                 itemCount: provider.mosques.length,
+//       //                 itemBuilder: (_, i) {
+//       //                   final m = provider.mosques[i];
+//       //                   if (currentPosition == null) {
+//       //             return const SizedBox.shrink();
+//       //           }
+//       //                   final distance = Geolocator.distanceBetween(
+//       //                     currentPosition!.latitude,
+//       //                     currentPosition!.longitude,
+//       //                     m.coordinates.lat,
+//       //                     m.coordinates.lng,
+//       //                   );
+//       //                   return GestureDetector(
+//       //                     onTap: () async {
+//       //                       final res = await Navigator.push<MosqueModel>(
+//       //                         context,
+//       //                         MaterialPageRoute(
+//       //                           builder: (_) => MosqueDetailView(mosque: m),
+//       //                         ),
+//       //                       );
+//       //                       if (res != null && mounted) {
+//       //                         final latLng = LatLng(
+//       //                             res.coordinates.lat, res.coordinates.lng);
+//       //                         mapController?.animateCamera(
+//       //                           CameraUpdate.newLatLngZoom(latLng, 16),
+//       //                         );
+//       //                         _drawRoute(latLng);
+//       //                       }
+//       //                     },
+//       //                     child: Container(
+//       //                       width: 180,
+//       //                       margin: const EdgeInsets.only(right: 12),
+//       //                       padding: const EdgeInsets.all(14),
+//       //                       decoration: BoxDecoration(
+//       //                         color: Colors.white,
+//       //                         borderRadius: BorderRadius.circular(16),
+//       //                         boxShadow: [
+//       //                           BoxShadow(
+//       //                             color: Colors.black.withOpacity(0.08),
+//       //                             blurRadius: 8,
+//       //                             offset: const Offset(0, 4),
+//       //                           ),
+//       //                         ],
+//       //                       ),
+//       //                       child: Column(
+//       //                         crossAxisAlignment: CrossAxisAlignment.start,
+//       //                         children: [
+//       //                           Text(
+//       //                             m.name,
+//       //                             maxLines: 1,
+//       //                             overflow: TextOverflow.ellipsis,
+//       //                             style: const TextStyle(
+//       //                               fontWeight: FontWeight.bold,
+//       //                               fontSize: 14,
+//       //                               color: Color(0xFF0A7E8C),
+//       //                             ),
+//       //                           ),
+//       //                           const SizedBox(height: 4),
+//       //                           Text(
+//       //                             '${formatDistance(distance)} away',
+//       //                             style: const TextStyle(
+//       //                               fontSize: 12,
+//       //                               color: Colors.grey,
+//       //                             ),
+//       //                           ),
+//       //                         ],
+//       //                       ),
+//       //                     ),
+//       //                   );
+//       //                 },
+//       //               ),
+//       //             ),
+//       //         ),
+//     );
+//   }
+// }
+
+body: currentPosition == null
+    ? const Center(
+        child: CircularProgressIndicator(color: Color(0xFF0A9C8C)),
+      )
+    : Stack(
+        children: [
+          GoogleMap(
+            onMapCreated: (c) => mapController = c,
+            initialCameraPosition:
+                CameraPosition(target: currentPosition!, zoom: 14),
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            compassEnabled: true,
+            markers: markers,
+            polylines: _polylines,
+            onTap: widget.isPickerMode
+                ? (pos) {
+                    setState(() => currentPosition = pos);
+                    _updateMarker(pos);
+                  }
+                : null,
+          ),
+
+          // 👇 Ye bottom overlay card list hai (map ke upar)
+          if (!widget.isPickerMode && provider.mosques.isNotEmpty)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 20, // thoda upar rakhne ke liye
+              child: SizedBox(
+                height: 140,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: provider.mosques.length,
+                  itemBuilder: (_, i) {
+                    final m = provider.mosques[i];
+                    final distance = Geolocator.distanceBetween(
+                      currentPosition!.latitude,
+                      currentPosition!.longitude,
+                      m.coordinates.lat,
+                      m.coordinates.lng,
+                    );
+                    return GestureDetector(
+                      onTap: () async {
+                        final res = await Navigator.push<MosqueModel>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MosqueDetailView(mosque: m),
+                          ),
+                        );
+                        if (res != null && mounted) {
+                          final latLng = LatLng(
+                              res.coordinates.lat, res.coordinates.lng);
+                          mapController?.animateCamera(
+                            CameraUpdate.newLatLngZoom(latLng, 16),
                           );
-                          if (res != null && mounted) {
-                            final latLng = LatLng(
-                                res.coordinates.lat, res.coordinates.lng);
-                            mapController?.animateCamera(
-                              CameraUpdate.newLatLngZoom(latLng, 16),
-                            );
-                            _drawRoute(latLng);
-                          }
-                        },
-                        child: Container(
-                          width: 180,
-                          margin: const EdgeInsets.only(right: 12),
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.08),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                m.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Color(0xFF0A7E8C),
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${formatDistance(distance)} away',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
+                          _drawRoute(latLng);
+                        }
+                      },
+                      child: Container(
+                        width: 180,
+                        margin: const EdgeInsets.only(left: 12, right: 4),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              m.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color(0xFF0A7E8C),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${formatDistance(distance)} away',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+ const SizedBox(height: 4),
+                            if(m.amenities!=null&&m.amenities.isNotEmpty)
+                            Wrap(
+        spacing: 6,
+        runSpacing: 4,
+        children:  m.amenities.entries
+          .where((entry) => entry.value == true).map((entry) {   // sirf 3 dikhao (overflow avoid karne ke liye)
+          return Chip(
+            label: Text(
+              entry.key,
+              style: const TextStyle(fontSize: 10),
+            ),
+            backgroundColor: Colors.grey.shade100,
+            visualDensity: VisualDensity.compact,
+          );
+        }).toList(),)
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-    );
-  }
-}
+              ),
+            ),
+        ],
+      ),
+  );}}

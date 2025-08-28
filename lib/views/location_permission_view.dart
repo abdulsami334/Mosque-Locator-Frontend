@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mosque_locator/utils/app_assets.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/map_view.dart';
 import 'package:mosque_locator/widgets/Navigation/main_navigation.dart';
@@ -55,7 +56,11 @@ body: Center(
    mainAxisAlignment: MainAxisAlignment.center,
    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-       Icon(Icons.location_on, size: 100, color: AppStyles.primaryGreen),
+      Image.asset(
+        
+        height: 150,
+        width: 150,
+        AppAssets.locationIcon),
        const SizedBox(height: 30),
          const Text(
                       "We need your location to show nearby mosques.",

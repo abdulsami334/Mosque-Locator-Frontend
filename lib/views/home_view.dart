@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
@@ -41,13 +43,37 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-
+  final user = authProvider.user;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Contributor Dashboard"),
+        actions: [
+           IconButton(
+            icon: const Icon(Icons.add_alert),
+            tooltip: 'Show Snackbar',
+            onPressed: () {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
+            },
+          ),
+        ],
+        leading:  Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            
+                 backgroundImage: (authProvider.user?.imageUrl != null && authProvider.user!.imageUrl!.isNotEmpty)
+              ? (authProvider.user!.imageUrl!.startsWith('http')
+          ? NetworkImage(authProvider.user!.imageUrl!)
+          : FileImage(File(authProvider.user!.imageUrl!)))
+              : const AssetImage('assets/images/default_picture.png'),
+          
+            ),
+        ),
+  
+        title:  Text(authProvider.token!=null?user!.name:"Guest user" ),
         backgroundColor: AppStyles.primaryGreen,
         foregroundColor: Colors.white,
-        centerTitle: true,
+        //centerTitle: true,
         elevation: 0,
       ),
       body: Padding(

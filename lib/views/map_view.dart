@@ -727,22 +727,30 @@ body: currentPosition == null
                                 color: Colors.grey,
                               ),
                             ),
- const SizedBox(height: 4),
-                            if(m.amenities!=null&&m.amenities.isNotEmpty)
-                            Wrap(
-        spacing: 6,
-        runSpacing: 4,
-        children:  m.amenities.entries
-          .where((entry) => entry.value == true).map((entry) {   // sirf 3 dikhao (overflow avoid karne ke liye)
-          return Chip(
-            label: Text(
-              entry.key,
-              style: const TextStyle(fontSize: 10),
-            ),
-            backgroundColor: Colors.grey.shade100,
-            visualDensity: VisualDensity.compact,
-          );
-        }).toList(),)
+ const SizedBox(height: 2),
+                           const SizedBox(height: 4),
+if (m.amenities != null && m.amenities.isNotEmpty)
+  ConstrainedBox(
+    constraints: const BoxConstraints(maxHeight: 36), // 👈 2 lines ke liye enough
+    child: Wrap(
+      spacing: 4,
+      runSpacing: 2,
+      children: m.amenities.entries
+          .where((e) => e.value == true)
+          .take(4) // 👈 max 4 dikhao to avoid overflow
+          .map((e) => Chip(
+                label: Text(
+                  e.key,
+                  style: const TextStyle(fontSize: 10),
+                ),
+                backgroundColor: Colors.grey.shade100,
+                visualDensity: VisualDensity.compact,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: EdgeInsets.zero,
+              ))
+          .toList(),
+    ),
+  ),
                           ],
                         ),
                       ),

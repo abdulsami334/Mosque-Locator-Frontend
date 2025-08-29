@@ -9,6 +9,7 @@ import 'package:mosque_locator/views/contributor_register_form.dart';
 import 'package:mosque_locator/views/home_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
 import 'package:mosque_locator/views/login_view.dart';
+import 'package:mosque_locator/views/mosque_detail_view.dart';
 import 'package:mosque_locator/views/splash_view.dart';
 import 'package:mosque_locator/widgets/Navigation/main_navigation.dart';
 import 'package:provider/provider.dart';

@@ -15,7 +15,7 @@ class MyMosqueView extends StatefulWidget {
 }
 
 class _MyMosqueViewState extends State<MyMosqueView> {
-  Future<List<MosqueModel>>? _myMosquesFuture;
+  Future<void>? _myMosquesFuture;
 
   @override
   void initState() {
@@ -24,48 +24,46 @@ class _MyMosqueViewState extends State<MyMosqueView> {
   }
 
   Future<void> _loadMosques() async {
-  final auth = Provider.of<AuthProvider>(context, listen: false);
-  final mosqueProvider = Provider.of<MosqueProvider>(context, listen: false);
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final mosqueProvider = Provider.of<MosqueProvider>(context, listen: false);
 
-  if (auth.token != null) {
-    mosqueProvider.setToken(auth.token!);
-
-    if (mounted) {
-      setState(() {
-        // yahan directly future assign kar do
-        _myMosquesFuture = mosqueProvider.getMyMosques();
-      });
-    }
-  } else {
-    if (mounted) {
-      setState(() {
-        _myMosquesFuture = Future.error('Token not available');
-      });
+    if (auth.token != null) {
+      mosqueProvider.setToken(auth.token!);
+      if (mounted) {
+        setState(() {
+          _myMosquesFuture = mosqueProvider.loadMyMosques();
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _myMosquesFuture = Future.error('Token not available');
+        });
+      }
     }
   }
-}
-
 
   Future<void> _retry() async => _loadMosques();
 
   @override
   Widget build(BuildContext context) {
-  
-    //final provider= Provider.of<MosqueModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Mosques'),
         centerTitle: true,
-        backgroundColor: AppStyles.primaryGreen,               
+        backgroundColor: AppStyles.primaryGreen,
         foregroundColor: Colors.white,
       ),
       body: _myMosquesFuture == null
           ? const Center(child: Text('Please login first'))
           : RefreshIndicator(
               onRefresh: _retry,
-              child: FutureBuilder<List<MosqueModel>>(
+              child: FutureBuilder<void>(
                 future: _myMosquesFuture,
                 builder: (context, snapshot) {
+                  final mosqueProvider = context.watch<MosqueProvider>();
+                  final mosques = mosqueProvider.myMosques;
+
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -91,14 +89,14 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                     );
                   }
 
-                  final mosques = snapshot.data ?? [];
                   if (mosques.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset('assets/empty.png',
-                              width: 140, height: 140,
+                              width: 140,
+                              height: 140,
                               errorBuilder: (_, __, ___) =>
                                   const Icon(Icons.mosque_outlined,
                                       size: 100, color: Colors.grey)),
@@ -158,10 +156,24 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          trailing:
-                               IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>AddMosqueView(mosque:m )));}, icon: Icon(Icons.edit, color: Colors.grey)),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.grey),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => AddMosqueView(mosque: m),
+                                ),
+                              );
+                            },
+                          ),
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (_)=>MosqueDetailView(mosque:m )));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MosqueDetailView(mosque: m),
+                              ),
+                            );
                           },
                         ),
                       );

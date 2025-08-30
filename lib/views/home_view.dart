@@ -6,6 +6,7 @@ import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_assets.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/views/addMosque_view.dart';
+import 'package:mosque_locator/views/contributor_register_form.dart';
 import 'package:mosque_locator/views/login_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
 import 'package:mosque_locator/views/my_mosque_view.dart';
@@ -28,7 +29,7 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
           content: Text(msg),
           actions: [
             TextButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginView())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AuthView())),
               child: const Text('Login'),
             ),
           ],

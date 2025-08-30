@@ -44,12 +44,12 @@ class MyApp extends StatelessWidget {
   //       initialRoute: '/splashview',             // <-- first screen
   // routes: {
   //     '/splashview': (_) => const SplashView(),
-  //   '/register': (_) => const ContributorRegisterForm(),
-  //   '/login':    (_) => const LoginView(),
+  //   '/register': (_) => const AuthView(),
+    
   //   '/home':     (_) => const MosqueView(),  
   //       '/Navigation':     (_) => const MainNavigation(), // your map screen
   // },
-        home: MosqueView(),
+        home: AuthView(),
       ),
     );
   }

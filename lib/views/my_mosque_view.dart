@@ -143,7 +143,7 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                                       color: Colors.white, fontSize: 12),
                                 ),
                                 backgroundColor:
-                                    m.verified ? Colors.green : Colors.orange,
+                                    m.verified ? AppStyles.primaryGreen :Colors.transparent,
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                                 padding:

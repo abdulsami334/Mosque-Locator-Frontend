@@ -1,177 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:mosque_locator/models/mosque_model.dart';
-// import 'package:mosque_locator/utils/app_styles.dart';
-// import 'package:mosque_locator/views/map_view.dart';
-
-// class MosqueDetailView extends StatelessWidget {
-//   final MosqueModel mosque;
-
-//   const MosqueDetailView({super.key, required this.mosque});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AppStyles.primaryGreen,
-     
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             // Photos Slider
-//             // SizedBox(
-//             //   height: 200,
-//             //   child: PageView.builder(
-//             //     itemCount: mosque.photos.isNotEmpty ? mosque.photos.length : 1,
-//             //     itemBuilder: (context, index) {
-//             //       final imageUrl = mosque.photos.isNotEmpty
-//             //           ? mosque.photos[index]
-//             //           : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7iXwQma6aLN5zScygf15nHkrGzMFKszpqIw&s';
-//             //       return Image.network(imageUrl, fit: BoxFit.cover);
-//             //     },
-//             //   ),
-//             // ),
-
-//             // Mosque Info
-
-
-//             Padding(
-//               padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 16),
-//               child: Column(
-//                 children: [
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     children: [
-//                       IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back, size: 30,color: Colors.white,)),
-//                       const SizedBox(width: 8),
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.center,
-//                         children: [Text("Asar", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
-//                         Text("1 hr 44 mins until Asar", style: TextStyle(color: Colors.white, fontSize: 15),)],
-//                       )
-//                     ],
-//                   ),
-//                   Card(
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(12)),
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(16),
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             mosque.name,
-//                             style: const TextStyle(
-//                                 fontSize: 24, fontWeight: FontWeight.bold),
-//                           ),
-//                           const SizedBox(height: 8),
-//                           Row(
-//                             children: [
-//                               const Icon(Icons.location_on, color: Colors.green),
-//                               const SizedBox(width: 6),
-//                               Expanded(
-//                                 child: Text(
-//                                   mosque.address,
-//                                   style: const TextStyle(fontSize: 16),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           const SizedBox(height: 4),
-//                           Text("${mosque.city}, ${mosque.area}",
-//                               style: const TextStyle(color: Colors.grey)),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-
-//             // Prayer Timings
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16),
-//               child: Card(
-//                 shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(12)),
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(16),
-//                   child: Column(
-//                     children: [
-//                       const Text("Today's Prayer Timings",
-//                           style: TextStyle(
-//                               fontSize: 18, fontWeight: FontWeight.w600)),
-//                       const Divider(),
-//                       ...mosque.prayerTimes.entries.map((entry) {
-//                         return prayerRow(entry.key, entry.value);
-//                       }).toList(),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-
-//             // Amenities
-//             if (mosque.amenities.isNotEmpty)
-//               Padding(
-//                 padding: const EdgeInsets.all(16),
-//                 child: Card(
-//                   shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(12)),
-//                   child: Padding(
-//                     padding: const EdgeInsets.all(16),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         const Text("Amenities",
-//                             style: TextStyle(
-//                                 fontSize: 18, fontWeight: FontWeight.w600)),
-//                         const Divider(),
-//                         Wrap(
-//                           spacing: 12,
-//                           children: mosque.amenities.entries
-//                               .where((a) => a.value == true)
-//                               .map((a) => Chip(
-//                                     label: Text(a.key),
-//                                     avatar: const Icon(Icons.check_circle,
-//                                         color: Colors.green),
-//                                   ))
-//                               .toList(),
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-
-//             const SizedBox(height: 80),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton.extended(
-//         icon: const Icon(Icons.directions),
-//         label: const Text("Show Route"),
-//         onPressed: () {
-       
-//           Navigator.pop(context, mosque);
-//         },
-//       ),
-//     );
-//   }
-
-//   Widget prayerRow(String prayer, String time) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 6.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(prayer, style: const TextStyle(fontSize: 16)),
-//           Text(time, style: const TextStyle(fontWeight: FontWeight.w500)),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/models/mosque_model.dart';
 import 'package:mosque_locator/utils/app_assets.dart';
@@ -192,33 +18,44 @@ class _MosqueDetailViewState extends State<MosqueDetailView> {
   late List<MapEntry<String, String>> prayers;
   int _currentIndex = 0;
   Timer? _timer;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
 
-    // ✅ Normalize timings (ensure AM/PM always present)
     prayers = widget.mosque.prayerTimes.entries.map((entry) {
       String fixedTime = fixTime(entry.key, entry.value.toString());
       return MapEntry(entry.key, fixedTime);
     }).toList();
 
-    // ✅ Find upcoming prayer
     _currentIndex = getUpcomingPrayerIndex();
+    _pageController = PageController(
+      initialPage: _currentIndex,
+      viewportFraction: 0.25,
+    );
 
-    // ✅ Auto refresh every 30s
     _timer = Timer.periodic(const Duration(seconds: 30), (_) {
-      setState(() {});
+      setState(() {
+        _currentIndex = getUpcomingPrayerIndex();
+        if (_pageController.hasClients) {
+          _pageController.animateToPage(
+            _currentIndex,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
     });
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _pageController.dispose();
     super.dispose();
   }
 
-  /// ✅ Ensure AM/PM is added
   String fixTime(String prayer, String time) {
     if (time.toLowerCase().contains("am") || time.toLowerCase().contains("pm")) {
       return time;
@@ -233,7 +70,7 @@ class _MosqueDetailViewState extends State<MosqueDetailView> {
       case "isha":
         return "$time PM";
       default:
-        return "$time AM"; // fallback
+        return "$time AM";
     }
   }
 
@@ -283,186 +120,324 @@ class _MosqueDetailViewState extends State<MosqueDetailView> {
   @override
   Widget build(BuildContext context) {
     final currentPrayer = prayers[_currentIndex];
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: AppStyles.primaryGreen,
-      body: Column(
+      body: Stack(
         children: [
-          const SizedBox(height: 40),
+          // Prayer Times Slider - Compact design
+          Positioned(
+            top: screenHeight * 0.18,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: 110,
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: prayers.length,
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  final prayer = prayers[index];
+                  final isActive = index == _currentIndex;
+                  final isPassed = index < getUpcomingPrayerIndex();
 
-          // 🔹 Header with arrow + current prayer info
-          Row(
-            children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back,
-                    size: 28, color: Colors.white),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      currentPrayer.key,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 9, horizontal: 6),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: isActive 
+                            ? Colors.white.withOpacity(0.25) 
+                            : isPassed
+                              ? Colors.white.withOpacity(0.1)
+                              : Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                        border: isActive 
+                            ? Border.all(color: Colors.white, width: 1.2) 
+                            : isPassed
+                              ? Border.all(color: Colors.white.withOpacity(0.5), width: 0.8)
+                              : Border.all(color: Colors.transparent, width: 0),
+                      ),
+                      constraints: const BoxConstraints(
+                        maxWidth: 80,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            prayer.key,
+                            style: TextStyle(
+                              fontSize: isActive ? 13 : 10,
+                              fontWeight: FontWeight.bold,
+                              color: isPassed ? Colors.white70 : Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Image.asset(
+                            AppAssets.sunlogo, 
+                            height: isActive ? 25 : 20,
+                            color: isPassed ? Colors.white70 : Colors.white,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            prayer.value,
+                            style: TextStyle(
+                              fontSize: isActive ? 13 : 10,
+                              fontWeight: FontWeight.bold,
+                              color: isPassed ? Colors.white70 : Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      getRemainingTime(currentPrayer.value),
-                      style: const TextStyle(color: Colors.white70),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          // 🔹 Mosque Info Card
-         
-
-          // 🔹 Prayer Timings as vertical slider
-         SizedBox(
-  height: 120, // 👈 yahan apni marzi ki height set karein
-  child: PageView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: prayers.length,
-    controller: PageController(
-      initialPage: _currentIndex,
-      viewportFraction: 0.4,
-    ),
-    onPageChanged: (index) {
-      setState(() {
-        _currentIndex = index;
-      });
-    },
-    itemBuilder: (context, index) {
-      final prayer = prayers[index];
-      final isActive = index == _currentIndex;
-
-      return AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 35),
-        decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.white24,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: isActive
-              ? [const BoxShadow(color: Colors.black26, blurRadius: 6)]
-              : [],
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                prayer.key,
-                style: TextStyle(
-                  fontSize: isActive ? 16 : 10,
-                  fontWeight: FontWeight.bold,
-                  color: isActive ? AppStyles.primaryGreen : Colors.white,
-                ),
-              ),Image.asset(AppAssets.sunlogo, height: 10,),
-              const SizedBox(height: 6),
-              Text(
-                prayer.value,
-                style: TextStyle(
-                  fontSize: isActive ? 16 : 8,
-                  color: isActive ? AppStyles.primaryGreen : Colors.white70,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  ),
-)
-,
- Padding(
-            padding: const EdgeInsets.all(16),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.mosque.name,
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on, color: Colors.green),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            widget.mosque.address,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "${widget.mosque.city}, ${widget.mosque.area}",
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),
-          // 🔹 Amenities
-          if (widget.mosque.amenities.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Amenities",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+
+          // Main content card with curved top
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            top: screenHeight * 0.33,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 25, 20, 100),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Mosque Icon
+                    Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: AppStyles.primaryGreen.withOpacity(0.1),
+                        shape: BoxShape.circle,
                       ),
-                      const Divider(),
+                      child: Icon(
+                        Icons.mosque,
+                        size: 40,
+                        color: AppStyles.primaryGreen,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    // Mosque Name
+                    Text(
+                      widget.mosque.name,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        height: 1.3,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    
+                    // Location with fixed icon - PROPERLY ALIGNED
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2.0), // Fine-tuned alignment
+                            child: Icon(
+                              Icons.location_on, 
+                              color: AppStyles.primaryGreen, 
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              widget.mosque.address,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    
+                    // City and Area
+                    Text(
+                      "${widget.mosque.city}, ${widget.mosque.area}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Divider with decorative elements
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey[300],
+                              thickness: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Amenities",
+                              style: TextStyle(
+                                color: AppStyles.primaryGreen,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: Colors.grey[300],
+                              thickness: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Amenities
+                    if (widget.mosque.amenities.isNotEmpty)
                       Wrap(
-                        spacing: 12,
+                        alignment: WrapAlignment.center,
+                        spacing: 10,
+                        runSpacing: 10,
                         children: widget.mosque.amenities.entries
                             .where((a) => a.value == true)
                             .map(
                               (a) => Chip(
-                                label: Text(a.key),
-                                avatar: const Icon(Icons.check_circle,
-                                    color: Colors.green),
+                                backgroundColor: AppStyles.primaryGreen.withOpacity(0.1),
+                                label: Text(
+                                  a.key,
+                                  style: TextStyle(
+                                    color: AppStyles.primaryGreen,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                avatar: Icon(
+                                  Icons.check_circle,
+                                  color: AppStyles.primaryGreen,
+                                  size: 16,
+                                ),
                               ),
                             )
                             .toList(),
-                      )
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ),
+          ),
 
-          const SizedBox(height: 60),
+          // Back button and centered prayer info
+          Positioned(
+            top: 50,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  // Back Button
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back, size: 22, color: Colors.white),
+                    ),
+                  ),
+                  
+                  // Centered Prayer Info
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          currentPrayer.key,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          getRemainingTime(currentPrayer.value),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  // Invisible spacer to balance the layout
+                  const SizedBox(width: 48),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.directions),
-        label: const Text("Show Route"),
-        onPressed: () {
-          Navigator.pop(context, widget.mosque);
-        },
+      
+      // Show Route Button
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        child: FloatingActionButton.extended(
+          backgroundColor: AppStyles.primaryGreen,
+          icon: const Icon(Icons.directions, color: Colors.white, size: 20),
+          label: const Text(
+            "Show Route",
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+          onPressed: () {
+            Navigator.pop(context, widget.mosque);
+          },
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

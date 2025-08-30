@@ -5,6 +5,6 @@ class AppAssets {
     static const String mosqueIcon = 'assets/images/mosque.png';
         static const String Nearbyicon = 'assets/images/locicon.png';
                static const String sunlogo = 'assets/images/sunlogo.png';
-   
+          static const String background = 'assets/images/Background.png';
 
 }

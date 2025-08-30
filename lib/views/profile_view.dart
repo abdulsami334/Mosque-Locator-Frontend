@@ -85,7 +85,7 @@ class _ProfileViewState extends State<ProfileView> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => const ContributorRegisterForm()),
+                      builder: (_) => const AuthView()),
                 ),
               ),
             ],

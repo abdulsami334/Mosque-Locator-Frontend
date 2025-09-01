@@ -104,7 +104,7 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
                   ),
                 ],
               ),
-              
+    
               const SizedBox(height: 30),
               
               // Menu options - Removed Expanded widget

@@ -523,11 +523,11 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
             
                         // Form Container
                         Container(
-                          padding: const EdgeInsets.all(24),
+                          padding: const EdgeInsets.only(top: 24, bottom: 24, left: 10, right: 10),
                           // decoration: BoxDecoration(
                           //   color: Colors.white,
                           //   borderRadius: BorderRadius.circular(16),
-                            // boxShadow: [
+                            // boxShadow: [r
                             //   BoxShadow(
                             //     color: Colors.black.withOpacity(0.1),
                             //     blurRadius: 20,

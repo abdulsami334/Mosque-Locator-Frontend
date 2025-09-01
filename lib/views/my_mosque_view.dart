@@ -126,17 +126,33 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                             backgroundColor: AppStyles.primaryGreen,
                             child: Icon(Icons.mosque, color: Colors.white),
                           ),
-                          title: Row(
+                          title: Expanded(
+                            child: Text(
+                              m.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${m.city}, ${m.area}\n${m.address}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: Column(
                             children: [
-                              Expanded(
-                                child: Text(
-                                  m.name,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
+                              IconButton(
+                                icon: const Icon(Icons.edit, color: Colors.grey),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => AddMosqueView(mosque: m),
+                                    ),
+                                  );
+                                },
                               ),
-                              Chip(
+                                Chip(
                                 label: Text(
                                   m.verified ? 'Verified' : 'Pending',
                                   style: const TextStyle(
@@ -147,25 +163,9 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 6),
+                                    const EdgeInsets.symmetric(horizontal: 4),
                               ),
                             ],
-                          ),
-                          subtitle: Text(
-                            '${m.city}, ${m.area}\n${m.address}',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.grey),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => AddMosqueView(mosque: m),
-                                ),
-                              );
-                            },
                           ),
                           onTap: () {
                             Navigator.push(

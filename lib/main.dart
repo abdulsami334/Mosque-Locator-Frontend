@@ -5,14 +5,12 @@ import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/utils/constant.dart';
-import 'package:mosque_locator/views/addMosque_view.dart';
 import 'package:mosque_locator/views/contributor_register_form.dart';
-import 'package:mosque_locator/views/home_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
-import 'package:mosque_locator/views/login_view.dart';
-import 'package:mosque_locator/views/mosque_detail_view.dart';
+import 'package:mosque_locator/views/my_mosque_view.dart';
 import 'package:mosque_locator/views/splash_view.dart';
 import 'package:mosque_locator/widgets/Navigation/main_navigation.dart';
+
 import 'package:provider/provider.dart';
 
 void main() {
@@ -42,15 +40,15 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.primaryGreen),
           useMaterial3: true,
         ),
-  //       initialRoute: '/splashview',             // <-- first screen
-  // routes: {
-  //     '/splashview': (_) => const SplashView(),
-  //   '/register': (_) => const AuthView(),
+        initialRoute: '/splashview',             // <-- first screen
+  routes: {
+      '/splashview': (_) => const SplashView(),
+    '/register': (_) => const AuthView(),
     
-  //   '/home':     (_) => const MosqueView(),  
-  //       '/Navigation':     (_) => const MainNavigation(), // your map screen
-  // },
-        home: AddMosqueView(),
+    '/home':     (_) => const MosqueView(),  
+        '/Navigation':     (_) => const MainNavigation(), // your map screen
+  },
+        home: AuthView(),
       ),
     );
   }

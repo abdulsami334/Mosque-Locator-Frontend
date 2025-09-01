@@ -5,6 +5,7 @@ import 'package:mosque_locator/providers/mosque_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/utils/constant.dart';
+import 'package:mosque_locator/views/addMosque_view.dart';
 import 'package:mosque_locator/views/contributor_register_form.dart';
 import 'package:mosque_locator/views/home_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
   //   '/home':     (_) => const MosqueView(),  
   //       '/Navigation':     (_) => const MainNavigation(), // your map screen
   // },
-        home: AuthView(),
+        home: AddMosqueView(),
       ),
     );
   }

@@ -735,12 +735,12 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
         validator: validator,
         style: const TextStyle(
           fontSize: 16,
-          color: Colors.black87,
+          color: Colors.black,
         ),
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            color: Colors.grey[600],
+            //color: Colors.grey[600],
             fontSize: 14,
           ),
           prefixIcon: Icon(

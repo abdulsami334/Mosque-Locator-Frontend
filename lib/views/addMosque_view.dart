@@ -235,7 +235,7 @@ void initState() {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           child: Form(
             key: _formKey,
             child: Column(
@@ -382,6 +382,7 @@ void initState() {
       child: TextFormField(
         controller: ctrl,
         decoration: InputDecoration(
+          
           labelText: label,
           prefixIcon: Icon(icon, color: const Color(0xFF0A9C8C)),
           filled: true,
@@ -407,19 +408,21 @@ void initState() {
   Widget _buildTimeInput(TextEditingController ctrl, String label) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: TextFormField(
-        controller: ctrl,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: const Icon(Icons.access_time, color: Color(0xFF0A9C8C)),
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+      child: SizedBox(
+        child: TextFormField(
+          controller: ctrl,
+          decoration: InputDecoration(
+            labelText: label,
+            prefixIcon: const Icon(Icons.access_time, color: Color(0xFF0A9C8C)),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
           ),
+          validator: (val) => val!.isEmpty ? 'Required' : null,
         ),
-        validator: (val) => val!.isEmpty ? 'Required' : null,
       ),
     );
   }

@@ -76,6 +76,7 @@ class AuthProvider with ChangeNotifier {
               ? (data['contributor']['contributor'] ?? data['contributor'])
               : data,
         );
+        print(_token);
         notifyListeners();
         return true;
       } else {

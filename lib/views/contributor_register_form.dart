@@ -331,6 +331,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/models/user_model.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
+import 'package:mosque_locator/providers/notification_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_assets.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
@@ -392,7 +393,7 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  Future<void> _login(AuthProvider userProvider, MosqueProvider mosqueProvider) async {
+  Future<void> _login(AuthProvider userProvider, MosqueProvider mosqueProvider, NotificationProvider notifProvider ) async {
     if (!_loginFormKey.currentState!.validate()) return;
 
     final success = await userProvider.loginContributor(
@@ -412,6 +413,7 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
     );
 
     if (success) {
+      notifProvider.setToken(userProvider.token!);
       mosqueProvider.setToken(userProvider.token!);
       Navigator.pushReplacementNamed(context, '/Navigation');
     }
@@ -465,7 +467,7 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     final userProvider = Provider.of<AuthProvider>(context);
     final mosqueProvider = Provider.of<MosqueProvider>(context, listen: false);
-
+  final notifProvider  = Provider.of<NotificationProvider>(context, listen: false);
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage(AppAssets.background),fit: BoxFit.cover)
@@ -536,7 +538,7 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
                             // ],
                         //  ),
                           child: isLogin
-                              ? _buildLoginForm(userProvider, mosqueProvider)
+                              ? _buildLoginForm(userProvider, mosqueProvider,notifProvider)
                               : _buildSignupForm(userProvider),
                         ),
             
@@ -552,7 +554,7 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
   }
 
   // -------- Forms ----------
-  Widget _buildLoginForm(AuthProvider userProvider, MosqueProvider mosqueProvider) {
+  Widget _buildLoginForm(AuthProvider userProvider, MosqueProvider mosqueProvider, NotificationProvider notifProvider) {
     return Form(
       key: _loginFormKey,
       child: Column(
@@ -592,7 +594,7 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
           _buildStyledButton(
             text: 'Sign in',
             isLoading: userProvider.isLoading,
-            onPressed: () => _login(userProvider, mosqueProvider),
+            onPressed: () => _login(userProvider, mosqueProvider, notifProvider),
           ),
         ],
       ),

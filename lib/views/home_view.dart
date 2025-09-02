@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
+import 'package:mosque_locator/providers/notification_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_assets.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
@@ -10,6 +11,7 @@ import 'package:mosque_locator/views/contributor_register_form.dart';
 import 'package:mosque_locator/views/login_view.dart';
 import 'package:mosque_locator/views/map_view.dart';
 import 'package:mosque_locator/views/my_mosque_view.dart';
+import 'package:mosque_locator/views/notification_view.dart';
 import 'package:provider/provider.dart';
 
 class ContributorHomeView extends StatefulWidget {
@@ -45,6 +47,7 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final notificationProvider = Provider.of<NotificationProvider>(context, listen: false);
     final mosqueProvider = Provider.of<MosqueProvider>(context);
     final nearbyCount = mosqueProvider.nearbyMosqueCount;
     int myMosqueCount = mosqueProvider.myMosques.length;
@@ -57,9 +60,11 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
             icon: const Icon(Icons.notifications),
             tooltip: 'Notifications',
             onPressed: () {
+              
+              notificationProvider.notifications==null?
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('No new notifications')),
-              );
+              ):Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationView()));
             },
           ),
         ],

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:mosque_locator/providers/mosque_provider.dart';
+import 'package:mosque_locator/providers/notification_provider.dart';
 import 'package:mosque_locator/providers/user_provider.dart';
 import 'package:mosque_locator/utils/app_styles.dart';
 import 'package:mosque_locator/utils/constant.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) =>MosqueProvider ()),
           ChangeNotifierProvider(create: (_) =>AuthProvider ()),
+              ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
           child: MaterialApp(
         debugShowCheckedModeBanner: false,

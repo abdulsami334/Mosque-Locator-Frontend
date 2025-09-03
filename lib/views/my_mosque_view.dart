@@ -126,46 +126,56 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                             backgroundColor: AppStyles.primaryGreen,
                             child: Icon(Icons.mosque, color: Colors.white),
                           ),
-                          title: Expanded(
-                            child: Text(
-                              m.name,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          subtitle: Text(
-                            '${m.city}, ${m.area}\n${m.address}',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: Column(
+                          title: Row(
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit, color: Colors.grey),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => AddMosqueView(mosque: m),
-                                    ),
-                                  );
-                                },
+                              Expanded(
+                                child: Text(
+                                  m.name,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                                Chip(
-                                label: Text(
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: m.verified
+                                      ? AppStyles.primaryGreen
+                                      : Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(
                                   m.verified ? 'Verified' : 'Pending',
                                   style: const TextStyle(
-                                      color: Colors.white, fontSize: 12),
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                                backgroundColor:
-                                    m.verified ? AppStyles.primaryGreen :Colors.transparent,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4),
                               ),
                             ],
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              '${m.city}, ${m.area}\n${m.address}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.edit,
+                                size: 20, color: Colors.grey),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => AddMosqueView(mosque: m)),
+                            ),
                           ),
                           onTap: () {
                             Navigator.push(

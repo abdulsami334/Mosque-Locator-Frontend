@@ -12,6 +12,7 @@ class MosqueService {
     final res = await http.get(uri);
     if (res.statusCode == 200) {
       final List<dynamic> data = jsonDecode(res.body);
+      
       return data.map((e) => MosqueModel.fromJson(e)).toList();
     }
     throw Exception('Failed to load nearby mosques');

@@ -92,7 +92,7 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications, color: AppStyles.primaryGreen,),
             tooltip: 'Notifications',
             onPressed: () {
               // ignore: unnecessary_null_comparison
@@ -121,8 +121,8 @@ class _ContributorHomeViewState extends State<ContributorHomeView> {
           ),
         ),
         title: Text(authProvider.token != null ? user!.name : "Guest user"),
-        backgroundColor: AppStyles.primaryGreen,
-        foregroundColor: Colors.white,
+      //backgroundColor: Colors.white,
+        
         elevation: 0,
       ),
       body: RefreshIndicator(

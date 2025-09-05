@@ -44,7 +44,7 @@ class MosqueModel {
   final Map<String, dynamic> prayerTimes;
   final Map<String, dynamic> amenities;
   final List<String> photos;
-  final bool verified;
+  final String status;
 
   MosqueModel({
     required this.id,
@@ -56,7 +56,7 @@ class MosqueModel {
     required this.prayerTimes,
     required this.amenities,
     required this.photos,
-    required this.verified,
+    required this.status,
   });
 
   factory MosqueModel.fromJson(Map<String, dynamic> json) {
@@ -83,7 +83,7 @@ class MosqueModel {
       prayerTimes: Map<String, dynamic>.from(json['prayerTimes'] ?? {}),
       amenities: Map<String, dynamic>.from(json['amenities'] ?? {}),
       photos: List<String>.from(json['photos'] ?? []),
-      verified: json['verified'] ?? false,
+      status: json['status'] ?? false,
     );
   }
 
@@ -97,6 +97,6 @@ class MosqueModel {
         'prayerTimes': prayerTimes,
         'amenities': amenities,
         'photos': photos,
-        'verified': verified,
+        'status': status,
       };
 }

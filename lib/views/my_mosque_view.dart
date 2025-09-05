@@ -142,13 +142,13 @@ class _MyMosqueViewState extends State<MyMosqueView> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 6, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: m.verified
+                                  color: m.status=="accepted"
                                       ? AppStyles.primaryGreen
                                       : Colors.grey[400],
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Text(
-                                  m.verified ? 'Verified' : 'Pending',
+                                  m.status=="accepted" ? "Approved" : 'Pending',
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,

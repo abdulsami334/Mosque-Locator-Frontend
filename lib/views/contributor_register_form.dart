@@ -381,56 +381,58 @@ class _AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin
   }
 
   // -------- Custom Widgets ----------
-  Widget _buildStyledTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool obscureText = false,
-    TextInputType? keyboardType,
-    int maxLines = 1,
-    String? Function(String?)? validator,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.2),
-          width: 1,
-        ),
+Widget _buildStyledTextField({
+  required TextEditingController controller,
+  required String label,
+  required IconData icon,
+  bool obscureText = false,
+  TextInputType? keyboardType,
+  int maxLines = 1,
+  String? Function(String?)? validator,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.grey[50],
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: Colors.grey.withOpacity(0.2),
+        width: 1,
       ),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        maxLines: maxLines,
-        validator: validator,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(
-            //color: Colors.grey[600],
-            fontSize: 14,
-          ),
-          prefixIcon: Icon(
-            icon,
-            color: AppStyles.primaryGreen,
-            size: 20,
-          ),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 8,
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-        ),
+    ),
+    child: TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      validator: validator,
+      style: const TextStyle(
+        fontSize: 16,
+        color: Colors.black,
       ),
-    );
-  }
-
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          fontSize: 14,
+          height: 1.3, 
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: AppStyles.primaryGreen,
+          size: 20,
+        ),
+        border: InputBorder.none,
+        isDense: true, 
+        contentPadding: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+          //top: 5, // Adjusted for better centering
+          bottom: 12, // Adjusted for better centering
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+      ),
+    ),
+  );
+}
   Widget _buildStyledButton({
     required String text,
     required bool isLoading,
